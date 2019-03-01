@@ -2,13 +2,13 @@ import Http from './Http';
 class LoginApi {
     userRegister(params) {
         return Http.post({
-            url: '/UserRegister',
+            url: '/api/UserRegister',
             data: params
         });
     }
     userLogin(params) {
         return Http.post({
-            url: '/UserLogin',
+            url: '/api/UserLogin',
             data: params
         });
     }

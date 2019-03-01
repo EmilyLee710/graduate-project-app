@@ -38,3 +38,12 @@ export interface UserLogin{
   phone:string,
   passwd:string
 }
+
+export interface GetAllCuisine{
+  method?:string,
+  way?:string
+}
+
+export interface GetCuisineInfo{
+  CuisineId:number
+}

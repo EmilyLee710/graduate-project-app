@@ -52,6 +52,15 @@ export default class Mine extends React.Component<NavigationScreenProps<Params>,
                   <Text style={{ marginLeft: 10, color: 'black', fontSize: 16, marginTop: 4 }}>我的订单</Text>
                </View>
             </TouchableHighlight>
+            <TouchableHighlight activeOpacity={0.5} onPress={() => this.props.navigation.push('Usercollect', {
+
+            })}>
+               <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'flex-start' }}>
+                  <Image source={require('../../../assets/collect.png')}
+                     style={{ width: 30, height: 30, marginLeft: 20 }} />
+                  <Text style={{ marginLeft: 10, color: 'black', fontSize: 16, marginTop: 4 }}>我的收藏</Text>
+               </View>
+            </TouchableHighlight>
          </View>
       )
    }
@@ -61,7 +70,7 @@ export default class Mine extends React.Component<NavigationScreenProps<Params>,
       // this.setState({
       //    userId: nextProps.id
       // });
-      if (JSON.stringify(State.getItem('userId')) !== null){
+      if (JSON.stringify(State.getItem('userId')) !== null) {
          // Toast.show(JSON.stringify(State.getItem('userId')))
          let array = JSON.stringify(State.getItem('userId')).split('')
          // Toast.show(array[1])
@@ -74,8 +83,8 @@ export default class Mine extends React.Component<NavigationScreenProps<Params>,
    componentWillMount() {
       // let id = State.getItem('userId');
       // Toast.show(typeof(id))
-      
-      
+
+
       // Toast.show(this.props.navigation.state.params.id)
       // if(this.props.navigation.state.params !== null){
       // let userId = this.props.navigation.state.params.id

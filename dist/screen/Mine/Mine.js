@@ -23,7 +23,11 @@ export default class Mine extends React.Component {
             React.createElement(TouchableHighlight, { activeOpacity: 0.5, onPress: () => this.props.navigation.push('Userorder', {}) },
                 React.createElement(View, { style: { marginTop: 10, flexDirection: 'row', justifyContent: 'flex-start' } },
                     React.createElement(Image, { source: require('../../../assets/user_order.png'), style: { width: 30, height: 30, marginLeft: 20 } }),
-                    React.createElement(Text, { style: { marginLeft: 10, color: 'black', fontSize: 16, marginTop: 4 } }, "\u6211\u7684\u8BA2\u5355")))));
+                    React.createElement(Text, { style: { marginLeft: 10, color: 'black', fontSize: 16, marginTop: 4 } }, "\u6211\u7684\u8BA2\u5355"))),
+            React.createElement(TouchableHighlight, { activeOpacity: 0.5, onPress: () => this.props.navigation.push('Usercollect', {}) },
+                React.createElement(View, { style: { marginTop: 10, flexDirection: 'row', justifyContent: 'flex-start' } },
+                    React.createElement(Image, { source: require('../../../assets/collect.png'), style: { width: 30, height: 30, marginLeft: 20 } }),
+                    React.createElement(Text, { style: { marginLeft: 10, color: 'black', fontSize: 16, marginTop: 4 } }, "\u6211\u7684\u6536\u85CF")))));
     }
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(State.getItem('userId')) !== null) {

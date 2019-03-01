@@ -12,7 +12,7 @@ const MyStack = createStackNavigator(
         RestaurantList:{
         screen:RestaurantList,
         navigationOptions:{
-          title:'优选餐厅',
+          title:'今天去哪吃',
           headerTitleStyle:{
             flex:1,
             textAlign:'center'

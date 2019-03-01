@@ -5,7 +5,7 @@ import * as Response from '../interface/Response'
 class LoginApi{
     userRegister(params:Request.UserRegister){
         return Http.post<Response.Base,Request.UserRegister>({
-            url:'/UserRegister',
+            url:'/api/UserRegister',
             data:params
         })
     }
@@ -17,7 +17,7 @@ class LoginApi{
     // }
     userLogin(params:Request.UserLogin){
         return Http.post<Response.UserLogin,Request.UserLogin>({
-            url:'/UserLogin',
+            url:'/api/UserLogin',
             data:params
         })
     }

@@ -1,3 +1,6 @@
+import { ColorPropType } from "react-native";
+import { TabNavigator } from "react-navigation";
+
 export interface AuctionMarketList{
   id:number,
   cover:string,
@@ -65,4 +68,40 @@ export interface SkuInfo{
   number:number,
   ctime:number,
   sku_status:number
+}
+
+export interface foodInfo{
+  id:number,
+  c_name:string,
+  price:number,
+  cover_url:string,
+  detail_url:string,
+  origin_price:number,
+  sell_num:number,
+  collect_num:number,
+  restau_name:string,
+  ctime:number,
+  tag:string
+}
+
+export interface RestauInfo{
+  id:number,
+  ctime:number,
+  name:string,
+  passwd:string,
+  phone:string,
+  address:string,
+  license:string,
+  cover_url:string
+}
+
+export interface FoodlistItem{
+  id:number,
+  c_name:string,
+  tag:string,
+  price:number,
+  cover_url:string,
+  origin_price:number,
+  restau_name:string,
+  ctime:number
 }

@@ -11,7 +11,7 @@ const MyTab = createBottomTabNavigator({
     Food: {
         screen: Food,
         navigationOptions: {
-            tabBarLabel: '推荐',
+            tabBarLabel: '佳肴',
         }
     },
     Restaurant: {

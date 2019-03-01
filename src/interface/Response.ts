@@ -34,3 +34,11 @@ export interface UserLogin extends Base{
     UserId:string
 }
 
+export interface GetAllCuisine extends Base{
+    cuisine:Model.FoodlistItem[]
+}
+
+export interface GetCuisineInfo extends Base{
+    cuisine:Model.foodInfo
+}
+

@@ -7,6 +7,7 @@ import Login from '../Login'
 import Userinfo from './Userinfo'
 import Userorder from './Userorder'
 import Resgister from '../Register'
+import Usercollect from './UserCollect'
 
 // export default class Mine extends React.Component<NavigationScreenProps>{
 //    render(){
@@ -35,6 +36,17 @@ const MyStack = createStackNavigator(
         screen:Userorder,
         navigationOptions:{
           title:'我的订单',
+          headerTitleStyle:{
+            flex:1,
+            textAlign:'center',
+            marginLeft:-30
+          },
+        }
+      },
+      Usercollect:{
+        screen:Usercollect,
+        navigationOptions:{
+          title:'我的收藏',
           headerTitleStyle:{
             flex:1,
             textAlign:'center',

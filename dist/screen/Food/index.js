@@ -8,7 +8,7 @@ const MyStack = createStackNavigator({
     FoodList: {
         screen: FoodList,
         navigationOptions: {
-            title: '推荐菜品',
+            title: '今天吃什么',
             headerTitleStyle: {
                 flex: 1,
                 textAlign: 'center'

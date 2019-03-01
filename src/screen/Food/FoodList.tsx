@@ -9,19 +9,20 @@ import * as model from '../../interface/Model'
 import style from '../../styles/FoodList'
 
 import BidService from '../../services/Bid'
+import FoodService from '../../services/Food'
 
 import CountDown from '../../component/CountDown'
 import State from '../../services/State';
 
 interface State{
-    auctionMarketList:model.AuctionMarketList[],
+    foodList:model.FoodlistItem[],
     isLoading:boolean
 }
 
 export default class FoodList extends React.Component<NavigationScreenProps,State> {
   
     state: State = {
-      auctionMarketList:[],
+      foodList:[],
       isLoading:true
     }
 
@@ -29,16 +30,20 @@ export default class FoodList extends React.Component<NavigationScreenProps,Stat
       let id = info.item.id;
       let cover = info.item.cover;
       // let duration_time_type = info.item.duration_time_type;
-      let name = info.item.name;
+      let name = info.item.c_name;
+      let res_name = info.item.restau_name
+      let price = info.item.price;
+      let origin_price = info.item.origin_price;
+      let pub_time = this.timestampToDate(info.item.ctime)
       // let user_number = info.item.user_number;
       // let view_count = info.item.view_count;
       // let duration_time	 = info.item.duration_time;
-      let color;
+      // let color;
       // let status;
-      let flag;
-      let tag;
-      let timeToDate;
-      let formatTime;
+      // let flag;
+      let tag = info.item.tag;
+      // let timeToDate;
+      // let formatTime;
       // if(info.item.duration_time_type === 'Now'){
       //   color = '#EB6100';
       //   status= '拍卖中'
@@ -76,18 +81,19 @@ export default class FoodList extends React.Component<NavigationScreenProps,Stat
                 <View>
                   <ImageBackground style={style.foodimg} source={require('../../../assets/foog_recommend.jpg')}>
                     <View style={style.fooding}>
-                      <Text style={{color:'white',textAlign:'center'}}>川菜</Text>
+                      <Text style={{color:'white',textAlign:'center'}}>{tag}</Text>
                     </View>
                    </ImageBackground>
                 </View>
               </View>
               <View>
                 <View style={{marginLeft:10}}>
-                  <Text style={style.foodtitle}>麻婆豆腐</Text>
-                  <Text style={{fontSize:16}}>川胖子</Text>
-                  <Text style={[style.foodtitle,{marginTop:0}]}>￥20</Text>
-                  <Text style={{marginTop:60}}>12月31日 10时22分发布</Text>
-                  <Text style={{marginTop:0}}>520人浏览</Text>
+                  <Text style={style.foodtitle}>{name}</Text>
+                  <Text style={{fontSize:16}}>{res_name}</Text>
+                  <Text style={{color:'black'}}>￥{origin_price}</Text>
+                  <Text style={[style.foodtitle,{marginTop:0}]}>￥{price}</Text>
+                  <Text style={{marginTop:60}}>{pub_time}发布</Text>
+                  {/* <Text style={{marginTop:0}}>520人浏览</Text> */}
                 </View>
               </View>
             </View>
@@ -106,28 +112,24 @@ export default class FoodList extends React.Component<NavigationScreenProps,Stat
       minute = (date.getMinutes() <10 ? '0' + (date.getMinutes()) :date.getMinutes()),
       second = (date.getSeconds() <10 ? '0' + (date.getSeconds()) :date.getSeconds())
       // alert(Y+M+D);
-      return ({year:Y,month:M,day:D,hour:hour,minute:minute,second:second})
+      return (`${Y}-${M}-${D} ${hour}:${minute}`)
     }
 
-    async getAuctionMarketList(){
+    async getfoodList(method?:string,way?:string){
       try{
-        let result = await BidService.auctionMarketList({
-          token:null,
-          type:"All",
-          pageIndex:0,
-          pageSize:100,
-          sort:"ctime",
-          order:"desc"
+        let result = await FoodService.GetAllCuisine({
+          method,
+          way
         })
-        if(result.stat !== 'ok') {
+        if(result.stat !== '1') {
           Toast.show(result.stat.toString())
         }
         Toast.show('数据加载成功')
-        let auctionMarkets = result.items.map((item,i)=>{
+        let foodList = result.cuisine.map((item,i)=>{
           return item
         })
         this.setState({
-          auctionMarketList:auctionMarkets,
+          foodList:foodList,
           isLoading:false
         })
       } catch(error) {
@@ -170,14 +172,14 @@ export default class FoodList extends React.Component<NavigationScreenProps,Stat
                      <Text style={{color:'#d81e06',fontSize:16}}>按收藏从高到低</Text>
                    </TouchableHighlight>
                 </View>
-                {this.state.auctionMarketList === null? <View>
+                {this.state.foodList === null? <View>
                   <Text style={{textAlign:'center'}}>暂无食品推荐</Text>
                 </View>:<FlatList 
-                  data={this.state.auctionMarketList} 
+                  data={this.state.foodList} 
                   renderItem = {this._foodItem}
                   keyExtractor= {(item,index) => index.toString()}
                   initialNumToRender={2}
-                  onRefresh={this.getAuctionMarketList}
+                  onRefresh={this.getfoodList}
                   refreshing={this.state.isLoading}
                 />}
 

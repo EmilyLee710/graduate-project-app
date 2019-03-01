@@ -1,11 +1,24 @@
 import * as React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 export default class Order extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            numoffood: 1
+            foodInfo: {
+                id: null,
+                c_name: '',
+                price: null,
+                cover_url: '',
+                detail_url: '',
+                origin_price: null,
+                sell_num: null,
+                collect_num: null,
+                restau_name: '',
+                ctime: null,
+                tag: ''
+            },
+            numoffood: 1,
+            comment: '加辣'
         };
     }
     numCutdown() {
@@ -29,12 +42,7 @@ export default class Order extends React.Component {
                 React.createElement(View, { style: { marginLeft: 10 } },
                     React.createElement(Text, { style: { fontSize: 16, color: 'black' } }, "\u9EBB\u5A46\u8C46\u8150"),
                     React.createElement(Text, { style: { color: 'black' } }, "\u5DDD\u80D6\u5B50"),
-                    React.createElement(View, { style: { flexDirection: 'row', width: 80, marginTop: 20, justifyContent: 'space-between' } },
-                        React.createElement(TouchableOpacity, { activeOpacity: 0.5, onPress: () => this.numCutdown() },
-                            React.createElement(EvilIcons, { name: 'minus', color: '#d81e06', size: 25, style: { marginTop: 10 } })),
-                        React.createElement(Text, { style: { marginTop: 10 } }, this.state.numoffood),
-                        React.createElement(TouchableOpacity, { activeOpacity: 0.5, onPress: () => this.numIncrease() },
-                            React.createElement(EvilIcons, { name: 'plus', color: '#d81e06', size: 25, style: { marginTop: 10 } }))))),
+                    React.createElement(Text, null, "\u5355\u4EF7\uFF1A"))),
             React.createElement(View, { style: { marginLeft: 10, flexDirection: 'row', marginTop: 10 } },
                 React.createElement(Text, { style: { color: 'black', marginTop: 2 } }, "\u603B\u91D1\u989D\uFF1A"),
                 React.createElement(Text, { style: { color: '#d81e06', fontSize: 16 } }, "20")),

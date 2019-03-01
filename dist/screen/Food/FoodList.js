@@ -3,23 +3,23 @@ import { Text, View, Image, ScrollView, FlatList, TouchableHighlight, ImageBackg
 import Swiper from 'react-native-swiper';
 import Toast from 'react-native-simple-toast';
 import style from '../../styles/FoodList';
-import BidService from '../../services/Bid';
+import FoodService from '../../services/Food';
 export default class FoodList extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            auctionMarketList: [],
+            foodList: [],
             isLoading: true
         };
         this._foodItem = (info) => {
             let id = info.item.id;
             let cover = info.item.cover;
-            let name = info.item.name;
-            let color;
-            let flag;
-            let tag;
-            let timeToDate;
-            let formatTime;
+            let name = info.item.c_name;
+            let res_name = info.item.restau_name;
+            let price = info.item.price;
+            let origin_price = info.item.origin_price;
+            let pub_time = this.timestampToDate(info.item.ctime);
+            let tag = info.item.tag;
             return (React.createElement(View, null,
                 React.createElement(TouchableOpacity, { activeOpacity: 0.5, onPress: () => this.props.navigation.push('FoodDetail', {
                         id: id
@@ -29,40 +29,42 @@ export default class FoodList extends React.Component {
                             React.createElement(View, null,
                                 React.createElement(ImageBackground, { style: style.foodimg, source: require('../../../assets/foog_recommend.jpg') },
                                     React.createElement(View, { style: style.fooding },
-                                        React.createElement(Text, { style: { color: 'white', textAlign: 'center' } }, "\u5DDD\u83DC"))))),
+                                        React.createElement(Text, { style: { color: 'white', textAlign: 'center' } }, tag))))),
                         React.createElement(View, null,
                             React.createElement(View, { style: { marginLeft: 10 } },
-                                React.createElement(Text, { style: style.foodtitle }, "\u9EBB\u5A46\u8C46\u8150"),
-                                React.createElement(Text, { style: { fontSize: 16 } }, "\u5DDD\u80D6\u5B50"),
-                                React.createElement(Text, { style: [style.foodtitle, { marginTop: 0 }] }, "\uFFE520"),
-                                React.createElement(Text, { style: { marginTop: 60 } }, "12\u670831\u65E5 10\u65F622\u5206\u53D1\u5E03"),
-                                React.createElement(Text, { style: { marginTop: 0 } }, "520\u4EBA\u6D4F\u89C8"))))),
+                                React.createElement(Text, { style: style.foodtitle }, name),
+                                React.createElement(Text, { style: { fontSize: 16 } }, res_name),
+                                React.createElement(Text, { style: { color: 'black' } },
+                                    "\uFFE5",
+                                    origin_price),
+                                React.createElement(Text, { style: [style.foodtitle, { marginTop: 0 }] },
+                                    "\uFFE5",
+                                    price),
+                                React.createElement(Text, { style: { marginTop: 60 } },
+                                    pub_time,
+                                    "\u53D1\u5E03"))))),
                 React.createElement(View, { style: { width: '100%', height: 1, backgroundColor: '#dcdcdc' } })));
         };
     }
     timestampToDate(timestamp) {
         var date = new Date(timestamp), Y = date.getFullYear(), M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1), D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()), hour = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()), minute = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes()), second = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
-        return ({ year: Y, month: M, day: D, hour: hour, minute: minute, second: second });
+        return (`${Y}-${M}-${D} ${hour}:${minute}`);
     }
-    async getAuctionMarketList() {
+    async getfoodList(method, way) {
         try {
-            let result = await BidService.auctionMarketList({
-                token: null,
-                type: "All",
-                pageIndex: 0,
-                pageSize: 100,
-                sort: "ctime",
-                order: "desc"
+            let result = await FoodService.GetAllCuisine({
+                method,
+                way
             });
-            if (result.stat !== 'ok') {
+            if (result.stat !== '1') {
                 Toast.show(result.stat.toString());
             }
             Toast.show('数据加载成功');
-            let auctionMarkets = result.items.map((item, i) => {
+            let foodList = result.cuisine.map((item, i) => {
                 return item;
             });
             this.setState({
-                auctionMarketList: auctionMarkets,
+                foodList: foodList,
                 isLoading: false
             });
         }
@@ -84,8 +86,8 @@ export default class FoodList extends React.Component {
                         React.createElement(Text, { style: { color: '#d81e06', fontSize: 16 } }, "\u6309\u9500\u91CF\u4ECE\u9AD8\u5230\u4F4E")),
                     React.createElement(TouchableHighlight, null,
                         React.createElement(Text, { style: { color: '#d81e06', fontSize: 16 } }, "\u6309\u6536\u85CF\u4ECE\u9AD8\u5230\u4F4E"))),
-                this.state.auctionMarketList === null ? React.createElement(View, null,
-                    React.createElement(Text, { style: { textAlign: 'center' } }, "\u6682\u65E0\u98DF\u54C1\u63A8\u8350")) : React.createElement(FlatList, { data: this.state.auctionMarketList, renderItem: this._foodItem, keyExtractor: (item, index) => index.toString(), initialNumToRender: 2, onRefresh: this.getAuctionMarketList, refreshing: this.state.isLoading }),
+                this.state.foodList === null ? React.createElement(View, null,
+                    React.createElement(Text, { style: { textAlign: 'center' } }, "\u6682\u65E0\u98DF\u54C1\u63A8\u8350")) : React.createElement(FlatList, { data: this.state.foodList, renderItem: this._foodItem, keyExtractor: (item, index) => index.toString(), initialNumToRender: 2, onRefresh: this.getfoodList, refreshing: this.state.isLoading }),
                 React.createElement(Text, { style: { marginTop: 20, textAlign: 'center' } }, "\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014 \u6CA1\u6709\u66F4\u591A\u5566 \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014"))));
     }
 }
