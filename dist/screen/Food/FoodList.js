@@ -56,23 +56,29 @@ export default class FoodList extends React.Component {
                 method,
                 way
             });
-            if (result.stat !== '1') {
-                Toast.show(result.stat.toString());
+            if (result.stat === '0') {
+                Toast.show('暂无菜品，敬请期待');
             }
-            Toast.show('数据加载成功');
-            let foodList = result.cuisine.map((item, i) => {
-                return item;
-            });
-            this.setState({
-                foodList: foodList,
-                isLoading: false
-            });
+            else if (result.stat === '1') {
+                Toast.show('数据加载成功');
+                let foodList = result.cuisine.map((item, i) => {
+                    return item;
+                });
+                this.setState({
+                    foodList: foodList,
+                    isLoading: false
+                });
+            }
+            else {
+                throw result.stat;
+            }
         }
         catch (error) {
             Toast.show(error);
         }
     }
     componentWillMount() {
+        this.getfoodList('id', 'asc');
     }
     render() {
         return (React.createElement(View, { style: { backgroundColor: 'white' } },
@@ -81,13 +87,13 @@ export default class FoodList extends React.Component {
                     React.createElement(Image, { source: require('../../../assets/swiper_1.jpg'), style: { width: '100%', height: 250 } }),
                     React.createElement(Image, { source: require('../../../assets/swiper_2.jpg'), style: { width: '100%', height: 250 } }),
                     React.createElement(Image, { source: require('../../../assets/swiper_3.jpg'), style: { width: '100%', height: 250 } })),
-                React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-between', width: '96%', marginLeft: '2%' } },
+                React.createElement(View, { style: style.sortmention },
                     React.createElement(TouchableHighlight, null,
                         React.createElement(Text, { style: { color: '#d81e06', fontSize: 16 } }, "\u6309\u9500\u91CF\u4ECE\u9AD8\u5230\u4F4E")),
                     React.createElement(TouchableHighlight, null,
                         React.createElement(Text, { style: { color: '#d81e06', fontSize: 16 } }, "\u6309\u6536\u85CF\u4ECE\u9AD8\u5230\u4F4E"))),
-                this.state.foodList === null ? React.createElement(View, null,
-                    React.createElement(Text, { style: { textAlign: 'center' } }, "\u6682\u65E0\u98DF\u54C1\u63A8\u8350")) : React.createElement(FlatList, { data: this.state.foodList, renderItem: this._foodItem, keyExtractor: (item, index) => index.toString(), initialNumToRender: 2, onRefresh: this.getfoodList, refreshing: this.state.isLoading }),
+                this.state.foodList.length === 0 ? React.createElement(View, null,
+                    React.createElement(Text, { style: { textAlign: 'center', marginTop: 20 } }, "\u6682\u65E0\u98DF\u54C1\u63A8\u8350\uFF0C\u656C\u8BF7\u671F\u5F85")) : React.createElement(FlatList, { data: this.state.foodList, renderItem: this._foodItem, keyExtractor: (item, index) => index.toString(), initialNumToRender: 2, onRefresh: this.getfoodList, refreshing: this.state.isLoading }),
                 React.createElement(Text, { style: { marginTop: 20, textAlign: 'center' } }, "\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014 \u6CA1\u6709\u66F4\u591A\u5566 \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014"))));
     }
 }

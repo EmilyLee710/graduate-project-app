@@ -1,3 +1,5 @@
+import * as React from 'react';
+import { Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import RestaurantList from './RestaurantList';
 import RestaurantDetail from './RestaurantDetail';
@@ -7,9 +9,11 @@ const MyStack = createStackNavigator({
         screen: RestaurantList,
         navigationOptions: {
             title: '今天去哪吃',
+            headerLeft: (React.createElement(Image, { style: { width: 30, height: 30 }, source: require('../../../assets/cat.png') })),
             headerTitleStyle: {
                 flex: 1,
-                textAlign: 'center'
+                textAlign: 'center',
+                marginLeft: -30
             },
         }
     },

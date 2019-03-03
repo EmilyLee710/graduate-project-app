@@ -25,5 +25,12 @@ export default StyleSheet.create({
         marginTop: 160,
         opacity: 0.8,
         flexDirection: 'row'
+    },
+    sortmention: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '96%',
+        marginLeft: '2%',
+        marginTop: 20
     }
 });

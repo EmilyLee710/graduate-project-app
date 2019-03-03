@@ -129,11 +129,12 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
       if (result.stat !== '1') {
         // Toast.show(result.stat)
         throw result.stat
-      }
-      this.setState({
+      }else{
+        this.setState({
         id: result.cuisine.id,
         foodInfo: result.cuisine,
       })
+      }  
     } catch (error) {
       Toast.show(error)
     }
@@ -144,6 +145,7 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
     // this.getAuctionMarket();
     // this.getAuctionList('ctime','desc');
     // State.setItem('showTab',false)
+    this.getFoodinfo()
   }
 
   render() {

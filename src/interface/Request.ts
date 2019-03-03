@@ -47,3 +47,20 @@ export interface GetAllCuisine{
 export interface GetCuisineInfo{
   CuisineId:number
 }
+
+export interface GetUserInfo{
+  userID:number
+}
+
+export interface GetAllRestaurant{
+  method?:string,
+  way?:string
+}
+
+export interface GetRestaurantInfo{
+  RestaurantId:number
+}
+
+export interface GetCollect{
+  UserId:number
+}

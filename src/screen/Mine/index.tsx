@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, Text,FlatList, ListRenderItem, ToastAndroid } from 'react-native'
+import { View, Text,FlatList, ListRenderItem, Image } from 'react-native'
 import { createStackNavigator } from 'react-navigation';
 import { NavigationScreenProps } from 'react-navigation';
 import Mine from './Mine'
@@ -25,10 +25,15 @@ const MyStack = createStackNavigator(
         Mine:{
         screen:Mine,
         navigationOptions:{
-          title:'个人中心',
+          title:'我到底是谁',
+          headerLeft:
+        (
+          <Image style={{width:30,height:30}} source={require('../../../assets/cat.png')}/>
+        ), 
           headerTitleStyle:{
             flex:1,
-            textAlign:'center'
+            textAlign:'center',
+            marginLeft:-30
           },
         }
       },

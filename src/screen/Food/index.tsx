@@ -18,9 +18,14 @@ const MyStack = createStackNavigator(
       screen:FoodList,
       navigationOptions:{
         title:'今天吃什么',
+        headerLeft:
+        (
+          <Image style={{width:30,height:30}} source={require('../../../assets/cat.png')}/>
+        ),             
         headerTitleStyle:{
           flex:1,
-          textAlign:'center'
+          textAlign:'center',
+          marginLeft:-30
         },
       }
     },

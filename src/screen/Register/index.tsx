@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, StyleSheet, Text, FlatList, ListRenderItem, ToastAndroid, Image, TextInput, TouchableOpacity,Picker } from 'react-native'
+import { View, StyleSheet, Text, FlatList, ListRenderItem, ToastAndroid, Image, TextInput, TouchableOpacity, Picker } from 'react-native'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import { NavigationScreenProps } from 'react-navigation'
 import Toast from 'react-native-simple-toast'
@@ -55,6 +55,7 @@ export default class Userinfo extends React.Component<NavigationScreenProps, Sta
             } else {
                 Toast.show('注册成功')
                 this.props.navigation.navigate('Login')
+
             }
         } catch (error) {
             Toast.show(error)
@@ -99,7 +100,7 @@ export default class Userinfo extends React.Component<NavigationScreenProps, Sta
                     style={{width:'83%',height:50,marginLeft:'2%',marginTop:20}}/> */}
                         <Picker
                             selectedValue={this.state.sex}
-                            style={{ height: 50, width: 100,marginLeft:'2%',marginTop:20 }}
+                            style={{ height: 50, width: 100, marginLeft: '2%', marginTop: 20 }}
                             onValueChange={(itemValue, itemIndex) => this.setState({ sex: itemValue })}>
                             <Picker.Item label="男" value="man" />
                             <Picker.Item label="女" value="woman" />

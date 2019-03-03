@@ -4,6 +4,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Toast from 'react-native-simple-toast';
 import State from '../../services/State';
 import LoginService from '../../services/Login';
+import CheckService from '../../services/checked';
 export default class Login extends React.Component {
     constructor() {
         super(...arguments);
@@ -33,7 +34,7 @@ export default class Login extends React.Component {
                     this.props.navigation.navigate('Mine', {});
                 }
                 else {
-                    Toast.show(result.stat);
+                    Toast.show(CheckService.checkLoginStat(result.stat));
                 }
             }
             catch (error) {

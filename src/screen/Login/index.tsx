@@ -63,8 +63,8 @@ export default class Login extends React.Component<NavigationScreenProps, State>
             //  id:id
            })
          } else{
-          //  Toast.show(CheckService.checkLoginStat(result.stat))
-          Toast.show(result.stat)
+           Toast.show(CheckService.checkLoginStat(result.stat))
+          // Toast.show(result.stat)
          }
       } catch(error) {
         Toast.show(error)

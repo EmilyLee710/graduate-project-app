@@ -1,16 +1,51 @@
 import * as React from 'react';
 import { View, StyleSheet, Text, Image, TextInput, TouchableOpacity, Picker } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Toast from 'react-native-simple-toast';
+import State from '../../services/State';
+import MineService from '../../services/Mine';
 export default class Userinfo extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            username: '阿滢',
-            passwd: '88888888',
-            sex: '女',
-            phone: '18171011645',
-            address: '湖北省武汉市洪山区'
+            username: '',
+            sex: '',
+            phone: '',
+            address: ''
         };
+    }
+    async getMyinfo(id) {
+        try {
+            let result = await MineService.getUserInfo({
+                userID: id,
+            });
+            let sex = this.checkSex(result.sex);
+            this.setState({
+                username: result.username,
+                sex: sex,
+                phone: result.phone,
+                address: result.address
+            });
+        }
+        catch (error) {
+            Toast.show(error);
+        }
+    }
+    checkSex(type) {
+        if (type === 0) {
+            return 'man';
+        }
+        else if (type === 1) {
+            return 'woman';
+        }
+        else if (type === 2) {
+            return 'secret';
+        }
+    }
+    componentWillMount() {
+        let array = JSON.stringify(State.getItem('userId')).split('');
+        let id = parseInt(array[1]);
+        this.getMyinfo(id);
     }
     render() {
         return (React.createElement(View, { style: { backgroundColor: 'white', height: 700 } },
@@ -21,11 +56,6 @@ export default class Userinfo extends React.Component {
                     React.createElement(TouchableOpacity, { onPress: () => this.setState({ username: '' }) },
                         React.createElement(EvilIcons, { name: 'close', color: '#dcdcdc', size: 25, style: { marginTop: 30 } }))),
                 React.createElement(View, { style: style.separator_hori }),
-                React.createElement(View, { style: { flexDirection: 'row', width: '96%', marginLeft: '2%' } },
-                    React.createElement(Image, { source: require('../../../assets/passwd.png'), style: { width: 25, height: 25, marginTop: 30 } }),
-                    React.createElement(TextInput, { placeholder: '\u8BF7\u8F93\u5165\u65B0\u5BC6\u7801,\u6700\u957F16\u4F4D', placeholderTextColor: '#dcdcdc', keyboardType: 'default', maxLength: 16, onChangeText: (text) => { this.setState({ passwd: text }); }, selectionColor: 'black', defaultValue: this.state.passwd, value: this.state.passwd, underlineColorAndroid: 'transparent', style: { width: '83%', height: 50, marginLeft: '2%', marginTop: 20 } }),
-                    React.createElement(TouchableOpacity, { onPress: () => this.setState({ passwd: '' }) },
-                        React.createElement(EvilIcons, { name: 'close', color: '#dcdcdc', size: 25, style: { marginTop: 30 } }))),
                 React.createElement(View, { style: style.separator_hori }),
                 React.createElement(View, { style: { flexDirection: 'row', width: '96%', marginLeft: '2%' } },
                     React.createElement(Image, { source: require('../../../assets/userinfo_sex.png'), style: { width: 25, height: 25, marginTop: 30 } }),

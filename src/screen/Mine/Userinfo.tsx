@@ -1,11 +1,15 @@
 import * as React from 'react'
-import { View, StyleSheet, Text, FlatList, ListRenderItem, ToastAndroid, Image, TextInput, TouchableOpacity,Picker } from 'react-native'
+import { View, StyleSheet, Text, FlatList, ListRenderItem, ToastAndroid, Image, TextInput, TouchableOpacity, Picker } from 'react-native'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import { NavigationScreenProps } from 'react-navigation'
+import Toast from 'react-native-simple-toast'
+
+import State from '../../services/State'
+import MineService from '../../services/Mine'
+// import CheckService from '../../services/Checked'
 
 interface State {
   username: string,
-  passwd: string,
   sex: string,
   phone: string,
   address: string
@@ -14,11 +18,50 @@ interface State {
 export default class Userinfo extends React.Component<NavigationScreenProps, State>{
 
   state: State = {
-    username: '阿滢',
-    passwd: '88888888',
-    sex: '女',
-    phone: '18171011645',
-    address: '湖北省武汉市洪山区'
+    username: '',
+    sex: '',
+    phone: '',
+    address: ''
+  }
+
+  async getMyinfo(id: number) {
+    try {
+      // const id = this.props.navigation.state.params.id;
+      let result = await MineService.getUserInfo({
+        userID: id,
+      })
+      //  if (result.stat !== '1') {
+      //     // Toast.show(result.stat)
+      //     throw result.stat
+      //  } else {
+      let sex = this.checkSex(result.sex)
+      this.setState({
+        username: result.username,
+        sex: sex,
+        phone: result.phone,
+        address: result.address
+      })
+      //  }
+    } catch (error) {
+      Toast.show(error)
+    }
+  }
+
+  checkSex(type: number) {
+    if (type === 0) {
+      return 'man'
+    } else if (type === 1) {
+      return 'woman'
+    } else if (type === 2) {
+      return 'secret'
+    }
+  }
+
+  componentWillMount() {
+    let array = JSON.stringify(State.getItem('userId')).split('')
+    let id = parseInt(array[1])
+    // Toast.show(JSON.stringify(State.getItem('userId')))
+    this.getMyinfo(id)
   }
 
   render() {
@@ -38,7 +81,7 @@ export default class Userinfo extends React.Component<NavigationScreenProps, Sta
             </TouchableOpacity>
           </View>
           <View style={style.separator_hori}></View>
-          <View style={{ flexDirection: 'row', width: '96%', marginLeft: '2%' }}>
+          {/* <View style={{ flexDirection: 'row', width: '96%', marginLeft: '2%' }}>
             <Image source={require('../../../assets/passwd.png')} style={{ width: 25, height: 25, marginTop: 30 }} />
             <TextInput placeholder='请输入新密码,最长16位' placeholderTextColor='#dcdcdc' keyboardType='default'
               maxLength={16} onChangeText={(text) => { this.setState({ passwd: text }) }} selectionColor='black'
@@ -48,7 +91,7 @@ export default class Userinfo extends React.Component<NavigationScreenProps, Sta
             <TouchableOpacity onPress={() => this.setState({ passwd: '' })}>
               <EvilIcons name='close' color='#dcdcdc' size={25} style={{ marginTop: 30 }} />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={style.separator_hori}></View>
           <View style={{ flexDirection: 'row', width: '96%', marginLeft: '2%' }}>
             <Image source={require('../../../assets/userinfo_sex.png')} style={{ width: 25, height: 25, marginTop: 30 }} />

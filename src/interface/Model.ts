@@ -86,13 +86,25 @@ export interface foodInfo{
 
 export interface RestauInfo{
   id:number,
-  ctime:number,
-  name:string,
-  passwd:string,
-  phone:string,
+  restauname:string,
   address:string,
+  phone:string,
+  cuisinelist:RestauCuiItem[]
+  ctime:number,
+  collect_num:number
+  description:string
   license:string,
   cover_url:string
+}
+
+export interface RestauCuiItem{
+  id:number,
+  c_name:string,
+  price:number,
+  cover_url:string,
+  origin_price:number,
+  ctime:number,
+  tag:string
 }
 
 export interface FoodlistItem{
@@ -104,4 +116,20 @@ export interface FoodlistItem{
   origin_price:number,
   restau_name:string,
   ctime:number
+}
+
+export interface UserInfo{
+  id:number,
+  username:string,
+  phone:string,
+  address:string,
+  sex:number,
+  ctime:number
+}
+
+export interface ResListItem{
+  id:number,
+  cover_url:string
+  restaurantname:string,
+  address:string
 }

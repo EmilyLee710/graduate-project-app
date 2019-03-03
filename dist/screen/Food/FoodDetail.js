@@ -37,16 +37,19 @@ export default class BidDetails extends React.Component {
             if (result.stat !== '1') {
                 throw result.stat;
             }
-            this.setState({
-                id: result.cuisine.id,
-                foodInfo: result.cuisine,
-            });
+            else {
+                this.setState({
+                    id: result.cuisine.id,
+                    foodInfo: result.cuisine,
+                });
+            }
         }
         catch (error) {
             Toast.show(error);
         }
     }
     componentWillMount() {
+        this.getFoodinfo();
     }
     render() {
         return (React.createElement(View, null,
