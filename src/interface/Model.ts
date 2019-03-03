@@ -94,7 +94,8 @@ export interface RestauInfo{
   collect_num:number
   description:string
   license:string,
-  cover_url:string
+  cover_url:string,
+  sale_info:string
 }
 
 export interface RestauCuiItem{

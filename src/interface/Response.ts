@@ -52,7 +52,7 @@ export interface GetUserInfo extends Base {
 }
 
 export interface GetAllRestaurant extends Base {
-    restaurants: Model.ResListItem[]
+    restaurant: Model.ResListItem[]
 }
 
 

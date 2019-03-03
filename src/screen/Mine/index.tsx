@@ -8,6 +8,8 @@ import Userinfo from './Userinfo'
 import Userorder from './Userorder'
 import Resgister from '../Register'
 import Usercollect from './UserCollect'
+import Userconfirm from './Userconfirm'
+import UserEditpwd from './UserEditpwd'
 
 // export default class Mine extends React.Component<NavigationScreenProps>{
 //    render(){
@@ -83,6 +85,26 @@ const MyStack = createStackNavigator(
         screen:Resgister,
         navigationOptions:{
           title:'用户注册',
+          headerTitleStyle:{
+            flex:1,
+            textAlign:'center',
+            marginLeft:-30
+          },
+        }
+      },Userconfirm:{
+        screen:Userconfirm,
+        navigationOptions:{
+          title:'修改密码',
+          headerTitleStyle:{
+            flex:1,
+            textAlign:'center',
+            marginLeft:-30
+          },
+        }
+      },UserEditpwd:{
+        screen:UserEditpwd,
+        navigationOptions:{
+          title:'修改密码',
           headerTitleStyle:{
             flex:1,
             textAlign:'center',

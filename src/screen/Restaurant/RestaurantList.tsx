@@ -91,10 +91,10 @@ export default class RestaurantList extends React.Component<NavigationScreenProp
         // let restauList = result.restaurants.map((item, i) => {
         //   return item
         // })
-        let array = result.restaurants
+        // let array = result.restaurants
         // Toast.show(JSON.stringify(array[0]))
         this.setState({
-          restaurantList: result.restaurants,
+          restaurantList: result.restaurant,
           isLoading: false
         })
         Toast.show('喵~加载好啦')

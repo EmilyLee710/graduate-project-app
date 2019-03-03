@@ -5,12 +5,12 @@ import { createStackNavigator } from 'react-navigation';
 import { NavigationScreenProps } from 'react-navigation'
 import Toast from 'react-native-simple-toast'
 
-import BidService from '../../services/Bid'
+// import BidService from '../../services/Bid'
 import FoodService from '../../services/Food'
 import CountDown from '../../component/CountDown'
 import style from '../../styles/FoodDetail'
 import State from '../../services/State';
-import Food from '../../services/Food';
+
 
 
 interface Params {
@@ -129,12 +129,12 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
       if (result.stat !== '1') {
         // Toast.show(result.stat)
         throw result.stat
-      }else{
+      } else {
         this.setState({
-        id: result.cuisine.id,
-        foodInfo: result.cuisine,
-      })
-      }  
+          id: result.cuisine.id,
+          foodInfo: result.cuisine,
+        })
+      }
     } catch (error) {
       Toast.show(error)
     }
@@ -152,7 +152,7 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
     // const status = this.props.navigation.state.params.status;
     // const color = this.props.navigation.state.params.color;
     // const flag = this.props.navigation.state.params.flag;
-   
+
 
     return (
       <View>
@@ -189,11 +189,20 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
                 材料主要有豆腐、牛肉末（也可以用猪肉）、辣椒和花椒等。麻来自花椒，
                        辣来自辣椒，这道菜突出了川菜“麻辣”的特点。其口味独特，口感顺滑。</Text>
             </View>
-            <TouchableOpacity onPress={() => this.props.navigation.push('Order')}>
-              <View style={style.foodorder}>
-                <Text style={{ fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 }}>点我下单</Text>
-              </View>
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+              <TouchableOpacity onPress={() => this.props.navigation.push('Order')}>
+                <View style={style.foodorder}>
+                  <Text style={{ fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 }}>点我下单</Text>
+                </View>
+              </TouchableOpacity>
+              {/* <TouchableOpacity onPress={() => this.props.navigation.push('Order',{
+                 
+              })}>
+                <View style={style.foodorder}>
+                  <Text style={{ fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 }}>点我下单</Text>
+                </View>
+              </TouchableOpacity> */}
+            </View>
           </View>
           {/* <View style={style.listheader}>
                     <TouchableOpacity onPress={()=> this.getAuctionList('ctime','desc')}>

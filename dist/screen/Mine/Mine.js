@@ -49,7 +49,11 @@ export default class Mine extends React.Component {
                 React.createElement(TouchableHighlight, { activeOpacity: 0.5, onPress: () => this.props.navigation.push('Usercollect', {}) },
                     React.createElement(View, { style: { marginTop: 10, flexDirection: 'row', justifyContent: 'flex-start' } },
                         React.createElement(Image, { source: require('../../../assets/collect.png'), style: { width: 30, height: 30, marginLeft: 20 } }),
-                        React.createElement(Text, { style: { marginLeft: 10, color: 'black', fontSize: 16, marginTop: 4 } }, "\u6211\u7684\u6536\u85CF")))) : React.createElement(Text, { style: { marginTop: 20, marginLeft: 10, fontSize: 18, color: 'black' } }, "\u767B\u5F55\u540E\u53EF\u67E5\u770B\u8BA2\u5355\u4E0E\u6536\u85CF")));
+                        React.createElement(Text, { style: { marginLeft: 10, color: 'black', fontSize: 16, marginTop: 4 } }, "\u6211\u7684\u6536\u85CF"))),
+                React.createElement(TouchableHighlight, { activeOpacity: 0.5, onPress: () => this.props.navigation.push('Userconfirm', {}) },
+                    React.createElement(View, { style: { marginTop: 10, flexDirection: 'row', justifyContent: 'flex-start' } },
+                        React.createElement(Image, { source: require('../../../assets/passwd.png'), style: { width: 30, height: 30, marginLeft: 20 } }),
+                        React.createElement(Text, { style: { marginLeft: 10, color: 'black', fontSize: 16, marginTop: 4 } }, "\u4FEE\u6539\u5BC6\u7801")))) : React.createElement(Text, { style: { marginTop: 20, marginLeft: 10, fontSize: 18, color: 'black' } }, "\u767B\u5F55\u540E\u53EF\u67E5\u770B\u8BA2\u5355\u4E0E\u6536\u85CF")));
     }
     componentWillReceiveProps(nextProps) {
         if (JSON.stringify(State.getItem('userId')) !== null) {

@@ -69,7 +69,7 @@ export default class Mine extends React.Component<NavigationScreenProps<Params>,
                   </TouchableHighlight>
                </View> : <View>
                      <TouchableHighlight activeOpacity={0.5} onPress={() => this.props.navigation.navigate('Login')}>
-                        <Text style={{ marginTop: 20 ,marginLeft:10,fontSize:18,color:'black'}}>点击此处登录</Text>
+                        <Text style={{ marginTop: 20, marginLeft: 10, fontSize: 18, color: 'black' }}>点击此处登录</Text>
                      </TouchableHighlight>
                   </View>}
             </View>
@@ -92,7 +92,16 @@ export default class Mine extends React.Component<NavigationScreenProps<Params>,
                      <Text style={{ marginLeft: 10, color: 'black', fontSize: 16, marginTop: 4 }}>我的收藏</Text>
                   </View>
                </TouchableHighlight>
-            </View> : <Text style={{ marginTop: 20 ,marginLeft:10,fontSize:18,color:'black'}}>登录后可查看订单与收藏</Text>}
+               <TouchableHighlight activeOpacity={0.5} onPress={() => this.props.navigation.push('Userconfirm', {
+
+               })}>
+                  <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'flex-start' }}>
+                     <Image source={require('../../../assets/passwd.png')}
+                        style={{ width: 30, height: 30, marginLeft: 20 }} />
+                     <Text style={{ marginLeft: 10, color: 'black', fontSize: 16, marginTop: 4 }}>修改密码</Text>
+                  </View>
+               </TouchableHighlight>
+            </View> : <Text style={{ marginTop: 20, marginLeft: 10, fontSize: 18, color: 'black' }}>登录后可查看订单与收藏</Text>}
          </View>
       )
    }

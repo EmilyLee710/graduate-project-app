@@ -15,9 +15,10 @@ export default StyleSheet.create({
     },
     restaurantdetail:{
         flexDirection:'row',
-        justifyContent:'space-around',
+        justifyContent:'flex-start',
         width:'100%',
         height:30,
-        marginBottom:9
+        marginBottom:9,
+        marginLeft:20
     },
 })

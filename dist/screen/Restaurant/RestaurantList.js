@@ -37,9 +37,8 @@ export default class RestaurantList extends React.Component {
                 way: 'desc'
             });
             if (result.stat === '1') {
-                let array = result.restaurants;
                 this.setState({
-                    restaurantList: result.restaurants,
+                    restaurantList: result.restaurant,
                     isLoading: false
                 });
                 Toast.show('喵~加载好啦');

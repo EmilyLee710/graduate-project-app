@@ -30,7 +30,7 @@ export default StyleSheet.create({
         marginBottom: 9
     },
     foodorder: {
-        width: '100%',
+        width: '40%',
         marginTop: 20,
         height: 50,
         backgroundColor: '#d81e06'
