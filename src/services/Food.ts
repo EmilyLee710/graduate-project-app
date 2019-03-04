@@ -16,6 +16,14 @@ class FoodApi{
             data:params
         })
     }
+    
+    UserCollectCuisine(params:Request.UserCollectCuisine){
+        return Http.post<Response.Base,Request.UserCollectCuisine>({
+            url:'/api/GetCuisineInfo',
+            data:params
+        })
+    }
+
 }
 
 export default new FoodApi()

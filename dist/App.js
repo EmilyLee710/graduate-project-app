@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from 'react-navigation';
 import Food from './screen/Food';
 import Mine from './screen/Mine';
 import Restaurant from './screen/Restaurant';
+import Shoppingcart from './screen/Shoppingcart';
 import State from './services/State';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 State.setItem('host', 'http://47.106.186.164:8080/zhaoying');
@@ -18,6 +19,12 @@ const MyTab = createBottomTabNavigator({
         screen: Restaurant,
         navigationOptions: {
             tabBarLabel: '餐厅',
+        }
+    },
+    Shoppingcart: {
+        screen: Shoppingcart,
+        navigationOptions: {
+            tabBarLabel: '购物车',
         }
     },
     Mine: {
@@ -45,6 +52,14 @@ const MyTab = createBottomTabNavigator({
                 }
                 else {
                     return React.createElement(Image, { style: style.footImage, source: require('../assets/restau_black.png') });
+                }
+            }
+            else if (routeName === 'Shoppingcart') {
+                if (focused) {
+                    return React.createElement(Image, { style: style.footImage, source: require('../assets/focused_shopping_cart.png') });
+                }
+                else {
+                    return React.createElement(Image, { style: style.footImage, source: require('../assets/shopping_cart_black.png') });
                 }
             }
             else if (routeName === 'Mine') {

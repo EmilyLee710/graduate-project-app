@@ -31,6 +31,37 @@ export default class Userinfo extends React.Component {
             Toast.show(error);
         }
     }
+    async setInfo() {
+        let array = JSON.stringify(State.getItem('userId')).split('');
+        let userid = parseInt(array[1]);
+        if (this.state.username === '' || this.state.address === ''
+            || this.state.phone === '' || this.state.sex === '') {
+            Toast.show('请完善信息');
+        }
+        else {
+            let sex = this.checkSextoCommit(this.state.sex);
+            try {
+                let result = await MineService.UserSetMyInfo({
+                    UserId: userid,
+                    pwd: null,
+                    username: this.state.username,
+                    address: this.state.address,
+                    sex: sex,
+                    phone: this.state.phone
+                });
+                if (result.stat === '1') {
+                    Toast.show('修改成功');
+                    this.props.navigation.navigate('Mine');
+                }
+                else if (result.stat === '0') {
+                    Toast.show('修改失败');
+                }
+            }
+            catch (error) {
+                Toast.show(error);
+            }
+        }
+    }
     checkSex(type) {
         if (type === 0) {
             return 'man';
@@ -40,6 +71,17 @@ export default class Userinfo extends React.Component {
         }
         else if (type === 2) {
             return 'secret';
+        }
+    }
+    checkSextoCommit(type) {
+        if (type === 'man') {
+            return 0;
+        }
+        else if (type === 'woman') {
+            return 1;
+        }
+        else if (type === 'secret') {
+            return 2;
         }
     }
     componentWillMount() {
@@ -76,7 +118,7 @@ export default class Userinfo extends React.Component {
                     React.createElement(TouchableOpacity, { onPress: () => this.setState({ address: '' }) },
                         React.createElement(EvilIcons, { name: 'close', color: '#dcdcdc', size: 25, style: { marginTop: 30 } }))),
                 React.createElement(View, { style: style.separator_hori })),
-            React.createElement(TouchableOpacity, { activeOpacity: 0.5, onPress: () => this.props.navigation.push('Mine') },
+            React.createElement(TouchableOpacity, { activeOpacity: 0.5, onPress: () => this.setInfo() },
                 React.createElement(View, { style: style.foodorder },
                     React.createElement(Text, { style: { fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 } }, "\u63D0\u4EA4\u4FEE\u6539")))));
     }

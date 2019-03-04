@@ -9,17 +9,77 @@ import MineService from '../../services/Mine'
 
 interface State {
     newpassword: string
+    username: string
+    address: string
+    phone: string
+    sex: number
 }
 
 export default class Userconfirm extends React.Component<NavigationScreenProps, State>{
     state: State = {
-        newpassword: ''
+        newpassword: '',
+        username: '',
+        address: '',
+        phone: '',
+        sex: null
+    }
+
+    async setPwd() {
+        let array = JSON.stringify(State.getItem('userId')).split('')
+        let userid = parseInt(array[1])
+        if (this.state.newpassword === '') {
+            Toast.show('请输入新密码')
+        } else {
+            try {
+                let result = await MineService.UserSetMyPwd({
+                    UserId: userid,
+                    pwd: this.state.newpassword,
+                    username: this.state.username,
+                    address: this.state.address,
+                    phone: this.state.phone,
+                    sex: this.state.sex
+                })
+                if (result.stat === '1') {
+                    Toast.show('修改成功')
+                    this.props.navigation.navigate('Mine')
+                } else if (result.stat === '0') {
+                    Toast.show('修改失败')
+                }
+            } catch (error) {
+                Toast.show(error)
+            }
+        }
+
+    }
+
+    async getMyinfo(id: number) {
+        try {
+            // const id = this.props.navigation.state.params.id;
+            let result = await MineService.getUserInfo({
+                userID: id,
+            })
+            this.setState({
+                username: result.username,
+                sex: result.sex,
+                phone: result.phone,
+                address: result.address
+            })
+            //  }
+        } catch (error) {
+            Toast.show(error)
+        }
+    }
+
+    componentWillMount(){
+        let array = JSON.stringify(State.getItem('userId')).split('')
+        let userid = parseInt(array[1])
+        this.getMyinfo(userid)
     }
 
     render() {
         return (
-            <View style={{height:700,backgroundColor:'white'}}>
-                <Text style={{ marginLeft:'2%',marginTop: 20, fontSize: 18, color: 'black' }}>请输入新密码：</Text>
+            <View style={{ height: 700, backgroundColor: 'white' }}>
+                <Text style={{ marginLeft: '2%', marginTop: 20, fontSize: 18, color: 'black' }}>请输入新密码：</Text>
                 <View style={{ flexDirection: 'row', width: '96%', marginLeft: '2%' }}>
                     <Image source={require('../../../assets/passwd.png')}
                         style={{ width: 25, height: 25, marginTop: 30 }} />
@@ -33,7 +93,7 @@ export default class Userconfirm extends React.Component<NavigationScreenProps, 
                     </TouchableOpacity>
                 </View>
                 <View style={style.separator_hori}></View>
-                <TouchableOpacity activeOpacity={0.5} onPress={() => this.props.navigation.navigate('Mine')}>
+                <TouchableOpacity activeOpacity={0.5} onPress={() => this.setPwd()}>
                     <View style={style.foodorder}>
                         <Text style={{ fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 }}>提交新密码</Text>
                     </View>
@@ -45,15 +105,15 @@ export default class Userconfirm extends React.Component<NavigationScreenProps, 
 
 let style = StyleSheet.create({
     separator_hori: {
-      width: '96%',
-      height: 1,
-      marginLeft: '2%',
-      backgroundColor: '#d81e06'
+        width: '96%',
+        height: 1,
+        marginLeft: '2%',
+        backgroundColor: '#d81e06'
     }, foodorder: {
-      width: '60%',
-      marginTop: 20,
-      marginLeft: '20%',
-      height: 50,
-      backgroundColor: '#d81e06'
+        width: '60%',
+        marginTop: 20,
+        marginLeft: '20%',
+        height: 50,
+        backgroundColor: '#d81e06'
     }
-  })
+})

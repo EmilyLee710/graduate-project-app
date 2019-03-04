@@ -73,7 +73,8 @@ export default class FoodList extends React.Component<NavigationScreenProps, Sta
     return (
       <View>
         <TouchableOpacity activeOpacity={0.5} onPress={() => this.props.navigation.push('FoodDetail', {
-          id: id
+          id: id,
+          flag:'food'
         })}>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
 

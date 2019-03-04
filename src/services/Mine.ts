@@ -16,6 +16,27 @@ class MineApi {
             data: params
         })
     }
+
+    UserConfirmPwd(params: Request.UserConfirmPwd) {
+        return Http.post<Response.Base, Request.UserConfirmPwd>({
+            url: '/api/UserConfirmPwd',
+            data: params
+        })
+    }
+
+    UserSetMyPwd(params: Request.UserSetMyPwd) {
+        return Http.post<Response.Base, Request.UserSetMyPwd>({
+            url: '/api/UserSetMyInfo',
+            data: params
+        })
+    }
+
+    UserSetMyInfo(params: Request.UserSetMyInfo) {
+        return Http.post<Response.Base, Request.UserSetMyInfo>({
+            url: '/api/UserSetMyInfo',
+            data: params
+        })
+    }
 }
 
 export default new MineApi()

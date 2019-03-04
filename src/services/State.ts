@@ -5,6 +5,7 @@ class State {
   private host: string
   private token: string
   private userId:string
+  private shopping_cart:Model.CartInfo
   // private showTab: boolean
 
   getItem<T>(name: string) {

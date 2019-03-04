@@ -3,6 +3,7 @@ import { Text, View, ScrollView, FlatList, TouchableHighlight, TouchableOpacity,
 import Toast from 'react-native-simple-toast';
 import RestaurantService from '../../services/Restaurant';
 import style from '../../styles/RestaurantDetail';
+import State from '../../services/State';
 export default class RestaurantDetail extends React.Component {
     constructor() {
         super(...arguments);
@@ -30,7 +31,10 @@ export default class RestaurantDetail extends React.Component {
             let origin_price = info.item.origin_price;
             let price = info.item.price;
             let url = info.item.cover_url;
-            return (React.createElement(TouchableHighlight, { onPress: () => this.props.navigation.push('FoodDetail', { id: id }) },
+            return (React.createElement(TouchableHighlight, { onPress: () => this.props.navigation.push('FoodDetail', {
+                    id: id,
+                    flag: 'restaurant'
+                }) },
                 React.createElement(View, { style: { flexDirection: 'row', backgroundColor: 'white', height: 150, width: '100%' } },
                     React.createElement(ImageBackground, { style: style.foodlistimg, source: require('../../../assets/food_cover.jpg') }),
                     React.createElement(View, { style: { marginTop: 0, marginLeft: 10, width: '65%' } },
@@ -65,6 +69,33 @@ export default class RestaurantDetail extends React.Component {
             Toast.show(error);
         }
     }
+    async collectRestaurant() {
+        try {
+            const id = this.props.navigation.state.params.id;
+            if (State.getItem('userId') === null) {
+                Toast.show('请登录');
+                this.props.navigation.push('Login');
+            }
+            else {
+                let array = JSON.stringify(State.getItem('userId')).split('');
+                let userid = parseInt(array[1]);
+                let result = await RestaurantService.UserCollectRestaurant({
+                    restauID: id,
+                    UserId: userid
+                });
+                if (result.stat === '1') {
+                    Toast.show('收藏成功');
+                }
+                else {
+                    Toast.show('收藏失败');
+                    throw result.stat;
+                }
+            }
+        }
+        catch (error) {
+            Toast.show(error);
+        }
+    }
     componentWillMount() {
         this.getRestauinfo();
     }
@@ -88,7 +119,7 @@ export default class RestaurantDetail extends React.Component {
                         React.createElement(Text, null, this.state.restaurant.description),
                         React.createElement(Text, null, this.state.restaurant.sale_info)),
                     React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-around' } },
-                        React.createElement(TouchableOpacity, { activeOpacity: 0.5 },
+                        React.createElement(TouchableOpacity, { activeOpacity: 0.5, onPress: () => this.collectRestaurant() },
                             React.createElement(View, { style: { width: 60, height: 30, backgroundColor: '#d81e06' } },
                                 React.createElement(Text, { style: { color: 'white', fontSize: 18, textAlign: 'center' } }, "\u6536\u85CF"))),
                         React.createElement(TouchableOpacity, { activeOpacity: 0.5 },

@@ -5,6 +5,7 @@ import {createBottomTabNavigator,createStackNavigator} from 'react-navigation'
 import Food from './screen/Food'
 import Mine from './screen/Mine'
 import Restaurant from './screen/Restaurant'
+import Shoppingcart from './screen/Shoppingcart'
 
 import State from './services/State'
 
@@ -25,6 +26,12 @@ const MyTab = createBottomTabNavigator(
           screen:Restaurant,
           navigationOptions:{
             tabBarLabel: '餐厅',
+          }
+        },
+        Shoppingcart: {
+          screen:Shoppingcart,
+          navigationOptions:{
+            tabBarLabel: '购物车',
           }
         },
         Mine: {
@@ -50,6 +57,12 @@ const MyTab = createBottomTabNavigator(
                 return <Image style={style.footImage} source={require('../assets/focused_restau_red.png')}/>;
               } else{
                 return <Image style={style.footImage} source={require('../assets/restau_black.png')}/>;
+              }
+            } else if (routeName === 'Shoppingcart') {
+              if(focused){
+                return <Image style={style.footImage} source={require('../assets/focused_shopping_cart.png')}/>;
+              } else{
+                return <Image style={style.footImage} source={require('../assets/shopping_cart_black.png')}/>;
               }
             } else if (routeName === 'Mine') {
               if(focused){

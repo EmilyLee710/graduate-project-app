@@ -1,12 +1,69 @@
 import * as React from 'react';
 import { View, StyleSheet, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Toast from 'react-native-simple-toast';
+import State from '../../services/State';
+import MineService from '../../services/Mine';
 export default class Userconfirm extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            newpassword: ''
+            newpassword: '',
+            username: '',
+            address: '',
+            phone: '',
+            sex: null
         };
+    }
+    async setPwd() {
+        let array = JSON.stringify(State.getItem('userId')).split('');
+        let userid = parseInt(array[1]);
+        if (this.state.newpassword === '') {
+            Toast.show('请输入新密码');
+        }
+        else {
+            try {
+                let result = await MineService.UserSetMyPwd({
+                    UserId: userid,
+                    pwd: this.state.newpassword,
+                    username: this.state.username,
+                    address: this.state.address,
+                    phone: this.state.phone,
+                    sex: this.state.sex
+                });
+                if (result.stat === '1') {
+                    Toast.show('修改成功');
+                    this.props.navigation.navigate('Mine');
+                }
+                else if (result.stat === '0') {
+                    Toast.show('修改失败');
+                }
+            }
+            catch (error) {
+                Toast.show(error);
+            }
+        }
+    }
+    async getMyinfo(id) {
+        try {
+            let result = await MineService.getUserInfo({
+                userID: id,
+            });
+            this.setState({
+                username: result.username,
+                sex: result.sex,
+                phone: result.phone,
+                address: result.address
+            });
+        }
+        catch (error) {
+            Toast.show(error);
+        }
+    }
+    componentWillMount() {
+        let array = JSON.stringify(State.getItem('userId')).split('');
+        let userid = parseInt(array[1]);
+        this.getMyinfo(userid);
     }
     render() {
         return (React.createElement(View, { style: { height: 700, backgroundColor: 'white' } },
@@ -17,7 +74,7 @@ export default class Userconfirm extends React.Component {
                 React.createElement(TouchableOpacity, { onPress: () => this.setState({ newpassword: '' }) },
                     React.createElement(EvilIcons, { name: 'close', color: '#dcdcdc', size: 25, style: { marginTop: 30 } }))),
             React.createElement(View, { style: style.separator_hori }),
-            React.createElement(TouchableOpacity, { activeOpacity: 0.5, onPress: () => this.props.navigation.navigate('Mine') },
+            React.createElement(TouchableOpacity, { activeOpacity: 0.5, onPress: () => this.setPwd() },
                 React.createElement(View, { style: style.foodorder },
                     React.createElement(Text, { style: { fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 } }, "\u63D0\u4EA4\u65B0\u5BC6\u7801")))));
     }

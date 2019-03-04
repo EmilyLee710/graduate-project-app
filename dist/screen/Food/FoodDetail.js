@@ -3,11 +3,12 @@ import { Text, View, ScrollView, TouchableOpacity, ImageBackground } from 'react
 import Toast from 'react-native-simple-toast';
 import FoodService from '../../services/Food';
 import style from '../../styles/FoodDetail';
+import State from '../../services/State';
 export default class BidDetails extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            id: 0,
+            id: null,
             foodInfo: {
                 id: null,
                 c_name: '',
@@ -20,6 +21,15 @@ export default class BidDetails extends React.Component {
                 restau_name: '',
                 ctime: 0,
                 tag: ''
+            },
+            shoppingcart: {
+                id: null,
+                userId: null,
+                restauinfo: {
+                    id: null,
+                    restaurantname: ''
+                },
+                cuisinelist: []
             },
             isLoading: true
         };
@@ -48,8 +58,53 @@ export default class BidDetails extends React.Component {
             Toast.show(error);
         }
     }
+    async collectCuisine() {
+        try {
+            const id = this.props.navigation.state.params.id;
+            let array = JSON.stringify(State.getItem('userId')).split('');
+            let userid = parseInt(array[1]);
+            if (JSON.stringify(State.getItem('userId')) === null) {
+                Toast.show('请登录');
+                this.props.navigation.push('Login');
+            }
+            else {
+                let result = await FoodService.UserCollectCuisine({
+                    cuisineID: id,
+                    UserId: userid
+                });
+                if (result.stat !== '1') {
+                    throw result.stat;
+                }
+                else {
+                    Toast.show('收藏失败');
+                }
+            }
+        }
+        catch (error) {
+            Toast.show(error);
+        }
+    }
+    addShoppingcart() {
+        let cuisine_item = {
+            id: this.state.id,
+            c_name: this.state.foodInfo.c_name,
+            price: this.state.foodInfo.price,
+            cover_url: this.state.foodInfo.cover_url,
+            num: 1
+        };
+        this.state.shoppingcart.cuisinelist.push(cuisine_item);
+        State.setItem('shopping_cart', this.state.shoppingcart);
+        this.setState({
+            shoppingcart: this.state.shoppingcart
+        });
+    }
     componentWillMount() {
         this.getFoodinfo();
+        if (this.props.navigation.state.params.flag === 'restaurant') {
+            this.setState({
+                shoppingcart: State.getItem('shopping_cart')
+            });
+        }
     }
     render() {
         return (React.createElement(View, null,
@@ -75,12 +130,19 @@ export default class BidDetails extends React.Component {
                         React.createElement(Text, { style: { marginTop: 9 } },
                             "\u9500\u91CF\uFF1A",
                             this.state.foodInfo.sell_num)),
+                    React.createElement(TouchableOpacity, { activeOpacity: 0.5 },
+                        React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'flex-end', width: 60, height: 30, backgroundColor: '#d81e06' } },
+                            React.createElement(Text, { style: { color: 'white', fontSize: 28, textAlign: 'center' } }, "\u6536\u85CF"))),
                     React.createElement(View, { style: { marginTop: 10, width: '88%', marginLeft: '6%' } },
                         React.createElement(Text, null, "\u9EBB\u5A46\u8C46\u8150\uFF0C\u662F\u56DB\u5DDD\u7701\u4F20\u7EDF\u540D\u83DC\u4E4B\u4E00\uFF0C\u5C5E\u4E8E\u5DDD\u83DC\u3002\u4E3B\u8981\u539F\u6599\u4E3A\u914D\u6599\u548C\u8C46\u8150\uFF0C \u6750\u6599\u4E3B\u8981\u6709\u8C46\u8150\u3001\u725B\u8089\u672B\uFF08\u4E5F\u53EF\u4EE5\u7528\u732A\u8089\uFF09\u3001\u8FA3\u6912\u548C\u82B1\u6912\u7B49\u3002\u9EBB\u6765\u81EA\u82B1\u6912\uFF0C \u8FA3\u6765\u81EA\u8FA3\u6912\uFF0C\u8FD9\u9053\u83DC\u7A81\u51FA\u4E86\u5DDD\u83DC\u201C\u9EBB\u8FA3\u201D\u7684\u7279\u70B9\u3002\u5176\u53E3\u5473\u72EC\u7279\uFF0C\u53E3\u611F\u987A\u6ED1\u3002")),
                     React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-around' } },
                         React.createElement(TouchableOpacity, { onPress: () => this.props.navigation.push('Order') },
                             React.createElement(View, { style: style.foodorder },
-                                React.createElement(Text, { style: { fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 } }, "\u70B9\u6211\u4E0B\u5355"))))),
+                                React.createElement(Text, { style: { fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 } }, "\u70B9\u6211\u4E0B\u5355"))),
+                        this.props.navigation.state.params.flag === 'restaurant' ?
+                            React.createElement(TouchableOpacity, { onPress: () => this.props.navigation.push('Order') },
+                                React.createElement(View, { style: style.foodorder },
+                                    React.createElement(Text, { style: { fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 } }, "\u52A0\u5165\u8D2D\u7269\u8F66"))) : null)),
                 React.createElement(Text, { style: { marginTop: 20, textAlign: 'center' } }, "\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014 \u6CA1\u6709\u66F4\u591A\u5566 \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014"))));
     }
 }

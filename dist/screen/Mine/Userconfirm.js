@@ -1,12 +1,35 @@
 import * as React from 'react';
 import { View, StyleSheet, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Toast from 'react-native-simple-toast';
+import State from '../../services/State';
+import MineService from '../../services/Mine';
 export default class Userconfirm extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
             password: ''
         };
+    }
+    async confirmPwd() {
+        let array = JSON.stringify(State.getItem('userId')).split('');
+        let userid = parseInt(array[1]);
+        try {
+            let result = await MineService.UserConfirmPwd({
+                UserId: userid,
+                pwd: this.state.password
+            });
+            if (result.stat === '1') {
+                Toast.show('验证成功');
+                this.props.navigation.push('UserEditpwd');
+            }
+            else if (result.stat === '0') {
+                Toast.show('请确认原密码是否输入准确');
+            }
+        }
+        catch (error) {
+            Toast.show(error);
+        }
     }
     render() {
         return (React.createElement(View, { style: { height: 700, backgroundColor: 'white' } },

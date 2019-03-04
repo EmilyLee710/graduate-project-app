@@ -64,3 +64,36 @@ export interface GetRestaurantInfo{
 export interface GetCollect{
   UserId:number
 }
+
+export interface UserConfirmPwd{
+  UserId:number,
+  pwd:string
+}
+
+export interface UserSetMyPwd{
+  UserId:number,
+  pwd:string,
+  username:string,
+  address:string,
+  phone:string,
+  sex:number
+}
+
+export interface UserSetMyInfo{
+  UserId:number,
+  pwd:string,
+  username:string,
+  address:string,
+  phone:string,
+  sex:number
+}
+
+export interface UserCollectCuisine{
+  cuisineID:number,
+  UserId:number
+}
+
+export interface UserCollectRestaurant{
+  restauID:number,
+  UserId:number
+}

@@ -12,5 +12,11 @@ class RestaurantApi {
             data: params
         });
     }
+    UserCollectRestaurant(params) {
+        return Http.post({
+            url: '/api/UserCollectRestaurant',
+            data: params
+        });
+    }
 }
 export default new RestaurantApi();

@@ -16,6 +16,13 @@ class RestaurantApi {
             data: params
         })
     }
+
+    UserCollectRestaurant(params:Request.UserCollectRestaurant){
+        return Http.post<Response.Base,Request.UserCollectRestaurant>({
+            url:'/api/UserCollectRestaurant',
+            data:params
+        })
+    }
 }
 
 export default new RestaurantApi()

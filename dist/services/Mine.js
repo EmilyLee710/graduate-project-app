@@ -12,5 +12,23 @@ class MineApi {
             data: params
         });
     }
+    UserConfirmPwd(params) {
+        return Http.post({
+            url: '/api/UserConfirmPwd',
+            data: params
+        });
+    }
+    UserSetMyPwd(params) {
+        return Http.post({
+            url: '/api/UserSetMyInfo',
+            data: params
+        });
+    }
+    UserSetMyInfo(params) {
+        return Http.post({
+            url: '/api/UserSetMyInfo',
+            data: params
+        });
+    }
 }
 export default new MineApi();

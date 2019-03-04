@@ -22,7 +22,8 @@ export default class FoodList extends React.Component {
             let tag = info.item.tag;
             return (React.createElement(View, null,
                 React.createElement(TouchableOpacity, { activeOpacity: 0.5, onPress: () => this.props.navigation.push('FoodDetail', {
-                        id: id
+                        id: id,
+                        flag: 'food'
                     }) },
                     React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'flex-start' } },
                         React.createElement(View, null,

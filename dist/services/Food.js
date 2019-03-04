@@ -12,5 +12,11 @@ class FoodApi {
             data: params
         });
     }
+    UserCollectCuisine(params) {
+        return Http.post({
+            url: '/api/GetCuisineInfo',
+            data: params
+        });
+    }
 }
 export default new FoodApi();

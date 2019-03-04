@@ -10,19 +10,19 @@ import FoodService from '../../services/Food'
 import CountDown from '../../component/CountDown'
 import style from '../../styles/FoodDetail'
 import State from '../../services/State';
+import Shopping_cart from '../Shoppingcart';
 
 
 
 interface Params {
   id: number,
-  status?: string,
-  color?: string,
-  flag?: string,
+  flag: string,
 }
 
 interface State {
   id: number,
   foodInfo: model.foodInfo,
+  shoppingcart: model.CartInfo
   // auctionList:model.Auction[],
   // duration_time:number,
   isLoading: boolean
@@ -30,7 +30,7 @@ interface State {
 
 export default class BidDetails extends React.Component<NavigationScreenProps<Params>, State>{
   state: State = {
-    id: 0,
+    id: null,
     foodInfo: {
       id: null,
       c_name: '',
@@ -45,44 +45,17 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
       tag: ''
 
     },
+    shoppingcart: {
+      id: null,
+      userId: null,
+      restauinfo: {
+        id: null,
+        restaurantname: ''
+      },
+      cuisinelist: []
+    },
     isLoading: true
   }
-
-  // _lotItem = (info)=>{
-  //     let id = "info.item.id";
-  //     let name = "info.item.refer_sku.name";
-  //     let cover = "info.item.cover";
-  //     let starting_price = "";
-  //     let formatPrice = this.formatPrice(starting_price);
-  //     let reference_price = info.item.reference_price;
-  //     let duration_time = info.item.duration_time;
-  //     let color;
-  //     let flag;
-  //     let tag;
-  //     let status;
-  //     let formatTime;
-  //     let exactTime;
-
-
-  //     return (
-  //         <TouchableHighlight onPress={()=>this.props.navigation.push('AuctionDetail')}>
-  //             <View style={{flexDirection:'row',backgroundColor:'white',height:150,width:'100%'}}>
-  //                 <Image style={style.lotimg} source={{uri:`${State.getItem('host')}${cover}`}}/>
-  //                 <View style={{marginTop:10,marginLeft:10,width:'65%'}}>
-  //                     <Text style={{color:'black',fontSize:16}}>hhh</Text>
-  //                     <View style={[style.fooding,{backgroundColor:color,marginTop:0}]}>
-  //                         <Text style={{color:'white',textAlign:'center'}}>{status}</Text>
-  //                     </View>
-  //                     <View style={{flexDirection:'row'}}>
-  //                         <Text style={{color:color}}>起拍价：</Text>
-  //                         <Text style={{color:color,fontSize:16}}>{formatPrice} CNY</Text>
-  //                     </View>
-  //                     <Text>市场参考价：{info.item.reference_price}</Text>
-  //                     <Text>{flag}：{formatTime.year}年{formatTime.month}月{formatTime.day}日{formatTime.hour}时{formatTime.minute}分</Text>
-  //                 </View>
-  //             </View>
-  //         </TouchableHighlight>)
-  // }
 
   timestampToDate(timestamp) {
     var date = new Date(timestamp),
@@ -140,12 +113,58 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
     }
   }
 
+  async collectCuisine() {
+    try {
+      const id = this.props.navigation.state.params.id;
+      let array = JSON.stringify(State.getItem('userId')).split('')
+      let userid = parseInt(array[1])
+      if (JSON.stringify(State.getItem('userId')) === null) {
+        Toast.show('请登录')
+        this.props.navigation.push('Login')
+      } else {
+        let result = await FoodService.UserCollectCuisine({
+          cuisineID: id,
+          UserId: userid
+        })
+        if (result.stat !== '1') {
+          // Toast.show(result.stat)
+          throw result.stat
+        } else {
+          Toast.show('收藏失败')
+        }
+      }
+
+    } catch (error) {
+      Toast.show(error)
+    }
+  }
+
+  addShoppingcart() {
+    let cuisine_item = {
+      id: this.state.id,
+      c_name: this.state.foodInfo.c_name,
+      price: this.state.foodInfo.price,
+      cover_url: this.state.foodInfo.cover_url,
+      num: 1
+    }
+    this.state.shoppingcart.cuisinelist.push(cuisine_item)
+    State.setItem('shopping_cart',this.state.shoppingcart)
+    this.setState({
+      shoppingcart:this.state.shoppingcart
+    })
+  }
+
   componentWillMount() {
     // console.log('______________________________')
     // this.getAuctionMarket();
     // this.getAuctionList('ctime','desc');
     // State.setItem('showTab',false)
     this.getFoodinfo()
+    if (this.props.navigation.state.params.flag === 'restaurant') {
+      this.setState({
+        shoppingcart: State.getItem('shopping_cart')
+      })
+    }
   }
 
   render() {
@@ -178,12 +197,12 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
               <Text style={{ marginTop: 9 }}>销量：{this.state.foodInfo.sell_num}</Text>
               {/* <Text style={{ marginTop: 9 }}>浏览：1314</Text> */}
             </View>
-            {/* <TouchableOpacity activeOpacity={0.5}>
-                     <View 
-                     style={{flexDirection:'row',justifyContent:'flex-end',width:50,height:25,backgroundColor:'#d81e06'}}>
-                       <Text style={{color:'white',fontSize:28,textAlign:'center'}}>收藏</Text>
-                     </View>
-                   </TouchableOpacity> */}
+            <TouchableOpacity activeOpacity={0.5}>
+              <View
+                style={{ flexDirection: 'row', justifyContent: 'flex-end', width: 60, height: 30, backgroundColor: '#d81e06' }}>
+                <Text style={{ color: 'white', fontSize: 28, textAlign: 'center' }}>收藏</Text>
+              </View>
+            </TouchableOpacity>
             <View style={{ marginTop: 10, width: '88%', marginLeft: '6%' }}>
               <Text>麻婆豆腐，是四川省传统名菜之一，属于川菜。主要原料为配料和豆腐，
                 材料主要有豆腐、牛肉末（也可以用猪肉）、辣椒和花椒等。麻来自花椒，
@@ -195,6 +214,12 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
                   <Text style={{ fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 }}>点我下单</Text>
                 </View>
               </TouchableOpacity>
+              {this.props.navigation.state.params.flag === 'restaurant' ?
+                <TouchableOpacity onPress={() => this.props.navigation.push('Order')}>
+                  <View style={style.foodorder}>
+                    <Text style={{ fontSize: 18, color: 'white', textAlign: 'center', marginTop: 14 }}>加入购物车</Text>
+                  </View>
+                </TouchableOpacity> : null}
               {/* <TouchableOpacity onPress={() => this.props.navigation.push('Order',{
                  
               })}>

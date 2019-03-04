@@ -132,5 +132,24 @@ export interface ResListItem{
   id:number,
   cover_url:string
   restaurantname:string,
-  address:string
+  address:string,
 }
+
+export interface CartCuisineItem{
+  id:number,
+  c_name:string,
+  price:number,
+  cover_url:string,
+  num:number
+}
+
+export interface CartInfo{
+  id:number,
+  userId:number,
+  restauinfo:{
+    id:number,
+    restaurantname:string,
+  },
+  cuisinelist:CartCuisineItem[]
+}
+
