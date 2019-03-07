@@ -28,15 +28,15 @@ export default class RestaurantDetail extends React.Component {
         this._foodItem = (info) => {
             let id = info.item.id;
             let name = info.item.c_name;
-            let origin_price = info.item.origin_price;
-            let price = info.item.price;
+            let origin_price = info.item.origin_price / 100;
+            let price = info.item.price / 100;
             let url = info.item.cover_url;
             return (React.createElement(TouchableHighlight, { onPress: () => this.props.navigation.push('FoodDetail', {
                     id: id,
                     flag: 'restaurant'
                 }) },
                 React.createElement(View, { style: { flexDirection: 'row', backgroundColor: 'white', height: 150, width: '100%' } },
-                    React.createElement(ImageBackground, { style: style.foodlistimg, source: require('../../../assets/food_cover.jpg') }),
+                    React.createElement(ImageBackground, { style: style.foodlistimg, source: { uri: `${State.getItem('host')}${url}` } }),
                     React.createElement(View, { style: { marginTop: 0, marginLeft: 10, width: '65%' } },
                         React.createElement(Text, { style: { fontSize: 18, marginTop: 0, color: '#d81e06' } }, name),
                         React.createElement(Text, { style: { color: 'black', marginTop: 10 } },
@@ -103,7 +103,7 @@ export default class RestaurantDetail extends React.Component {
         return (React.createElement(View, null,
             React.createElement(ScrollView, null,
                 React.createElement(View, { style: { backgroundColor: 'white' } },
-                    React.createElement(ImageBackground, { style: style.restaurantimg, source: require('../../../assets/restaurant_cover.jpg') }),
+                    React.createElement(ImageBackground, { style: style.restaurantimg, source: { uri: `${State.getItem('host')}${this.state.restaurant.cover_url}` } }),
                     React.createElement(View, { style: { width: '88%', marginLeft: '6%', marginTop: 9 } },
                         React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-between' } },
                             React.createElement(Text, { style: { fontSize: 18, color: '#d81e06' } }, this.state.restaurant.restauname)),

@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native'
 export default StyleSheet.create({
     foodimg:{
         width: 150,
-        height: 180,
+        height: 200,
         marginTop:0,
         marginLeft:0,
         backgroundColor: 'transparent',
@@ -20,7 +20,7 @@ export default StyleSheet.create({
       height:20,
       width:50,
       backgroundColor:'#d81e06',
-      marginTop:140
+      marginTop:80
     },
     foodtime:{
       height:20,
@@ -35,7 +35,8 @@ export default StyleSheet.create({
     justifyContent: 'space-between', 
     width: '96%', 
     marginLeft: '2%',
-    marginTop:20
+    marginTop:10,
+    marginBottom:10
    }
 })
 

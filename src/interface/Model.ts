@@ -79,6 +79,7 @@ export interface foodInfo{
   origin_price:number,
   sell_num:number,
   collect_num:number,
+  restau_id:number,
   restau_name:string,
   ctime:number,
   tag:string
@@ -140,7 +141,7 @@ export interface CartCuisineItem{
   c_name:string,
   price:number,
   cover_url:string,
-  num:number
+  num:string
 }
 
 export interface CartInfo{
@@ -151,5 +152,26 @@ export interface CartInfo{
     restaurantname:string,
   },
   cuisinelist:CartCuisineItem[]
+}
+
+export interface OrderCuiItem{
+  id:number,
+  num:number
+}
+
+export interface MyOrder{
+   id:number,
+   ctime:number,
+   comment:string,
+   tot_price:number,
+   cuisine_id:{
+     id:number,
+     name:string,
+     num:number,
+     cover_url:string
+   }[],
+   restau_id:number,
+   restau_name:string,
+   order_status:number
 }
 

@@ -65,3 +65,11 @@ export interface GetCollect{
     cuisine:Model.FoodlistItem[]
 }
 
+export interface UserCreateOrder{
+   price:number
+}
+
+export interface UserGetMyOrder{
+    order:Model.MyOrder[]
+}
+

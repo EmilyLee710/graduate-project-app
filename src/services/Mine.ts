@@ -37,6 +37,13 @@ class MineApi {
             data: params
         })
     }
+
+    UserGetMyOrder(params: Request.UserGetMyOrder) {
+        return Http.post<Response.UserGetMyOrder, Request.UserGetMyOrder>({
+            url: '/api/UserGetMyOrder',
+            data: params
+        })
+    }
 }
 
 export default new MineApi()

@@ -1,3 +1,5 @@
+import {OrderCuiItem} from './Model'
+
 export interface AuctionMarketList {
   token?:string,
   type:string,
@@ -95,5 +97,17 @@ export interface UserCollectCuisine{
 
 export interface UserCollectRestaurant{
   restauID:number,
+  UserId:number
+}
+
+export interface UserCreateOrder{
+  buyer_id:number,
+  cuisine_id:OrderCuiItem[],
+  comment:string,
+  restau_id:number,
+  appoint_time:number
+}
+
+export interface UserGetMyOrder{
   UserId:number
 }

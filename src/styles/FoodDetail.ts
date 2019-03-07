@@ -31,10 +31,11 @@ export default StyleSheet.create({
         marginBottom:9
     },
     foodorder:{
-        width:'40%',
+        width:100,
         marginTop:20,
         height:50,
-        backgroundColor:'#d81e06'
+        backgroundColor:'#d81e06',
+        borderRadius:10
     },
     lotimg:{
         width:150,

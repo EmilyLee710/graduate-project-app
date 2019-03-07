@@ -14,7 +14,7 @@ class FoodApi {
     }
     UserCollectCuisine(params) {
         return Http.post({
-            url: '/api/GetCuisineInfo',
+            url: '/api/UserCollectCuisine',
             data: params
         });
     }

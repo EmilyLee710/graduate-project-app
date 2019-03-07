@@ -47,7 +47,7 @@ export default class RestaurantList extends React.Component<NavigationScreenProp
           id: id
         })}>
           <View>
-            <ImageBackground style={[style.foodimg, { width: '100%' }]} source={require('../../../assets/restaurant_cover.jpg')}>
+            <ImageBackground style={[style.foodimg, { width: '100%' }]} source={{uri:`${State.getItem('host')}${cover}`}}>
               {/* <View style={[style.biding,{backgroundColor:color}]}>
                       <Text style={{color:'white',textAlign:'center'}}>川菜</Text>
                     </View>

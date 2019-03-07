@@ -3,6 +3,7 @@ import { Text, View, ScrollView, FlatList, ImageBackground, TouchableOpacity } f
 import Toast from 'react-native-simple-toast';
 import style from '../../styles/FoodList';
 import RestaurantService from '../../services/Restaurant';
+import State from '../../services/State';
 export default class RestaurantList extends React.Component {
     constructor() {
         super(...arguments);
@@ -20,7 +21,7 @@ export default class RestaurantList extends React.Component {
                         id: id
                     }) },
                     React.createElement(View, null,
-                        React.createElement(ImageBackground, { style: [style.foodimg, { width: '100%' }], source: require('../../../assets/restaurant_cover.jpg') }))),
+                        React.createElement(ImageBackground, { style: [style.foodimg, { width: '100%' }], source: { uri: `${State.getItem('host')}${cover}` } }))),
                 React.createElement(Text, { style: style.foodtitle }, name),
                 React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-between' } },
                     React.createElement(Text, { style: [style.foodtitle, { marginTop: 0, color: 'black' }] }, address))));

@@ -30,5 +30,11 @@ class MineApi {
             data: params
         });
     }
+    UserGetMyOrder(params) {
+        return Http.post({
+            url: '/api/UserGetMyOrder',
+            data: params
+        });
+    }
 }
 export default new MineApi();

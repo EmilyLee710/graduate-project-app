@@ -44,8 +44,8 @@ export default class RestaurantDetail extends React.Component<NavigationScreenPr
   _foodItem = (info) => {
     let id = info.item.id;
     let name = info.item.c_name;
-    let origin_price = info.item.origin_price
-    let price = info.item.price;
+    let origin_price = info.item.origin_price/100
+    let price = info.item.price/100;
     let url = info.item.cover_url
     // let id = "1";
     // let name = "hh";
@@ -68,7 +68,7 @@ export default class RestaurantDetail extends React.Component<NavigationScreenPr
         flag:'restaurant' 
         })}>
         <View style={{ flexDirection: 'row', backgroundColor: 'white', height: 150, width: '100%' }}>
-          <ImageBackground style={style.foodlistimg} source={require('../../../assets/food_cover.jpg')} />
+          <ImageBackground style={style.foodlistimg} source={{uri:`${State.getItem('host')}${url}`}} />
           <View style={{ marginTop: 0, marginLeft: 10, width: '65%' }}>
             <Text style={{ fontSize: 18, marginTop: 0, color: '#d81e06' }}>{name}</Text>
             {/* <Text style={{fontSize:16}}>川胖子</Text> */}
@@ -84,6 +84,7 @@ export default class RestaurantDetail extends React.Component<NavigationScreenPr
   async getRestauinfo() {
     try {
       const id = this.props.navigation.state.params.id;
+      // Toast.show(id.toString())
       let result = await RestaurantService.GetRestaurantInfo({
         RestaurantId: id,
       })
@@ -91,6 +92,7 @@ export default class RestaurantDetail extends React.Component<NavigationScreenPr
         // let cuisineList = result.restaurant.cuisinelist.map((item, index) => {
         //   return item
         // })
+        // Toast.show(JSON.stringify(result.restaurant.cuisinelist))
         this.setState({
           id: result.restaurant.id,
           restaurant: result.restaurant,
@@ -149,7 +151,8 @@ export default class RestaurantDetail extends React.Component<NavigationScreenPr
         {/* 会首先传入InitialState*/}
         <ScrollView>
           <View style={{ backgroundColor: 'white' }}>
-            <ImageBackground style={style.restaurantimg} source={require('../../../assets/restaurant_cover.jpg')}>
+            <ImageBackground style={style.restaurantimg} 
+            source={{uri:`${State.getItem('host')}${this.state.restaurant.cover_url}`}}>
             </ImageBackground>
             <View style={{ width: '88%', marginLeft: '6%', marginTop: 9 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

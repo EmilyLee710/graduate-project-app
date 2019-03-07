@@ -28,12 +28,12 @@ export default class FoodList extends React.Component<NavigationScreenProps, Sta
 
   _foodItem = (info) => {
     let id = info.item.id;
-    let cover = info.item.cover;
+    let cover = info.item.cover_url;
     // let duration_time_type = info.item.duration_time_type;
     let name = info.item.c_name;
     let res_name = info.item.restau_name
-    let price = info.item.price;
-    let origin_price = info.item.origin_price;
+    let price = info.item.price / 100;
+    let origin_price = info.item.origin_price / 100;
     let pub_time = this.timestampToDate(info.item.ctime)
     // let user_number = info.item.user_number;
     // let view_count = info.item.view_count;
@@ -74,25 +74,22 @@ export default class FoodList extends React.Component<NavigationScreenProps, Sta
       <View>
         <TouchableOpacity activeOpacity={0.5} onPress={() => this.props.navigation.push('FoodDetail', {
           id: id,
-          flag:'food'
+          flag: 'food'
         })}>
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', width: '100%', height: 150 }}>
             <View>
-              <View>
-                <ImageBackground style={style.foodimg} source={require('../../../assets/foog_recommend.jpg')}>
-                  <View style={style.fooding}>
-                    <Text style={{ color: 'white', textAlign: 'center' }}>{tag}</Text>
-                  </View>
-                </ImageBackground>
-              </View>
+              <ImageBackground style={[style.foodimg, { height: 150 }]} source={{ uri: `${State.getItem('host')}${cover}` }}>
+                <View style={style.fooding}>
+                  <Text style={{ color: 'white', textAlign: 'center' }}>{tag}</Text>
+                </View>
+              </ImageBackground>
             </View>
             <View>
               <View style={{ marginLeft: 10 }}>
                 <Text style={style.foodtitle}>{name}</Text>
                 <Text style={{ fontSize: 16 }}>{res_name}</Text>
-                <Text style={{ color: 'black' }}>￥{origin_price}</Text>
-                <Text style={[style.foodtitle, { marginTop: 0 }]}>￥{price}</Text>
+                <Text style={{ color: 'black' }}>原价：￥{origin_price}</Text>
+                <Text style={[style.foodtitle, { marginTop: 0 }]}>现价：￥{price}</Text>
                 <Text style={{ marginTop: 60 }}>{pub_time}发布</Text>
                 {/* <Text style={{marginTop:0}}>520人浏览</Text> */}
               </View>
@@ -124,7 +121,7 @@ export default class FoodList extends React.Component<NavigationScreenProps, Sta
       })
       if (result.stat === '0') {
         Toast.show('暂无菜品，敬请期待')
-      } else if(result.stat === '1'){
+      } else if (result.stat === '1') {
         Toast.show('数据加载成功')
         let foodList = result.cuisine.map((item, i) => {
           return item
@@ -144,15 +141,30 @@ export default class FoodList extends React.Component<NavigationScreenProps, Sta
   componentWillMount() {
     // console.log('______________________________')
     // this.getAuctionMarketList();
-    this.getfoodList('id','asc')
+    this.getfoodList('id', 'asc')
   }
 
 
 
   render() {
     return (
-      <View style={{ backgroundColor: 'white' }} >
-        <ScrollView style={{ marginBottom: 3 }}>
+      <View style={{backgroundColor:'white'}} >
+        <Swiper autoplay={true} height={200} showsPagination={true}
+          dotColor="white" activeDotColor='#d81e06' horizontal={true} loop={true}
+        >
+          <Image source={require('../../../assets/swiper_1.jpg')} style={{ width: '100%', height: 200 }}></Image>
+          <Image source={require('../../../assets/swiper_2.jpg')} style={{ width: '100%', height: 200 }}></Image>
+          <Image source={require('../../../assets/swiper_3.jpg')} style={{ width: '100%', height: 200 }}></Image>
+        </Swiper>
+        <View style={style.sortmention}>
+          <TouchableHighlight>
+            <Text style={{ color: '#d81e06', fontSize: 16 }}>按销量从高到低</Text>
+          </TouchableHighlight>
+          <TouchableHighlight>
+            <Text style={{ color: '#d81e06', fontSize: 16 }}>按收藏从高到低</Text>
+          </TouchableHighlight>
+        </View>
+        <ScrollView style={{ marginBottom: 3, backgroundColor: 'white' }}>
           {/* <SectionList 
                   initialNumToRender={4}
                   renderItem={this._bidItem.bind(this)}
@@ -162,23 +174,10 @@ export default class FoodList extends React.Component<NavigationScreenProps, Sta
                   refreshing={this.state.isLoading}
                   SectionSeparatorComponent={() => <View style={{height:5,backgroundColor:'#dcdcdc'}}></View>}
                 /> */}
-          <Swiper autoplay={true} height={250} showsPagination={true}
-            dotColor="white" activeDotColor='#d81e06' horizontal={true} loop={true}
-          >
-            <Image source={require('../../../assets/swiper_1.jpg')} style={{ width: '100%', height: 250 }}></Image>
-            <Image source={require('../../../assets/swiper_2.jpg')} style={{ width: '100%', height: 250 }}></Image>
-            <Image source={require('../../../assets/swiper_3.jpg')} style={{ width: '100%', height: 250 }}></Image>
-          </Swiper>
-          <View style={style.sortmention}>
-            <TouchableHighlight>
-              <Text style={{ color: '#d81e06', fontSize: 16 }}>按销量从高到低</Text>
-            </TouchableHighlight>
-            <TouchableHighlight>
-              <Text style={{ color: '#d81e06', fontSize: 16 }}>按收藏从高到低</Text>
-            </TouchableHighlight>
-          </View>
+          {/*  */}
+
           {this.state.foodList.length === 0 ? <View>
-            <Text style={{ textAlign: 'center' ,marginTop:20}}>暂无食品推荐，敬请期待</Text>
+            <Text style={{ textAlign: 'center', marginTop: 20 }}>暂无食品推荐，敬请期待</Text>
           </View> : <FlatList
               data={this.state.foodList}
               renderItem={this._foodItem}
@@ -190,7 +189,6 @@ export default class FoodList extends React.Component<NavigationScreenProps, Sta
 
           <Text style={{ marginTop: 20, textAlign: 'center' }}>—————————— 没有更多啦 ——————————</Text>
         </ScrollView>
-
       </View>
     )
   }
