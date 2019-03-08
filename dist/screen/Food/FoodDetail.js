@@ -73,11 +73,12 @@ export default class BidDetails extends React.Component {
                     cuisineID: id,
                     UserId: userid
                 });
-                if (result.stat !== '1') {
-                    throw result.stat;
+                if (result.stat === '1') {
+                    Toast.show('收藏成功');
                 }
                 else {
                     Toast.show('收藏失败');
+                    throw result.stat;
                 }
             }
         }
@@ -102,9 +103,9 @@ export default class BidDetails extends React.Component {
             this.props.navigation.push('Login');
         }
         else {
+            let array = JSON.stringify(State.getItem('userId')).split('');
+            let user = parseInt(array[1]);
             if (State.getItem('shopping_cart') === null) {
-                let array = JSON.stringify(State.getItem('userId')).split('');
-                let user = parseInt(array[1]);
                 let cuisine_item = {
                     id: this.state.id,
                     c_name: this.state.foodInfo.c_name,
@@ -125,8 +126,10 @@ export default class BidDetails extends React.Component {
                 this.setState({
                     shoppingcart: newcart
                 });
+                Toast.show('已加入购物车');
             }
             else {
+                this.state.shoppingcart = State.getItem('shopping_cart');
                 let cuisine_item = {
                     id: this.state.id,
                     c_name: this.state.foodInfo.c_name,
@@ -134,11 +137,18 @@ export default class BidDetails extends React.Component {
                     cover_url: this.state.foodInfo.cover_url,
                     num: '1'
                 };
+                this.state.id = 1;
+                this.state.shoppingcart.userId = user;
+                this.state.shoppingcart.restauinfo = {
+                    id: this.state.foodInfo.restau_id,
+                    restaurantname: this.state.foodInfo.restau_name
+                };
                 this.state.shoppingcart.cuisinelist.push(cuisine_item);
                 State.setItem('shopping_cart', this.state.shoppingcart);
                 this.setState({
                     shoppingcart: this.state.shoppingcart
                 });
+                Toast.show('已加入购物车');
             }
         }
     }
@@ -175,10 +185,9 @@ export default class BidDetails extends React.Component {
                             "\u9500\u91CF\uFF1A",
                             this.state.foodInfo.sell_num)),
                     React.createElement(TouchableOpacity, { activeOpacity: 0.5, onPress: () => this.collectCuisine() },
-                        React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'center' } },
-                            React.createElement(View, { style: { width: 60, height: 30, backgroundColor: '#d81e06', boderRadius: 20 } },
-                                React.createElement(Text, { style: { color: 'white', fontSize: 18, textAlign: 'center' } }, "\u6536\u85CF")))),
-                    React.createElement(View, { style: { width: '100%', height: 300 } },
+                        React.createElement(View, { style: style.foodcollect },
+                            React.createElement(Text, { style: { color: 'white', fontSize: 18, textAlign: 'center' } }, "\u6536\u85CF"))),
+                    React.createElement(View, { style: { width: '100%', height: 300, marginTop: 10 } },
                         React.createElement(Image, { source: { uri: `${State.getItem('host')}${this.state.foodInfo.detail_url}` }, style: { width: '100%', height: 300 } })),
                     React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-around' } },
                         React.createElement(TouchableOpacity, { onPress: () => this.goCreateOrder() },

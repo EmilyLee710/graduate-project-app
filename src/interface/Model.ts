@@ -172,6 +172,11 @@ export interface MyOrder{
    }[],
    restau_id:number,
    restau_name:string,
-   order_status:number
+   order_staus:number
 }
 
+export interface HomeImages{
+    id:number,
+    url:string,
+    index:number
+}

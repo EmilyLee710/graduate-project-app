@@ -23,7 +23,6 @@ export default class Login extends React.Component {
             Toast.show('请输入密码');
         }
         else {
-            Toast.show(passwd);
             try {
                 let result = await LoginService.userLogin({
                     phone: phone,

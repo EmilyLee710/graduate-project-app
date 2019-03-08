@@ -10,6 +10,7 @@ export default class FoodList extends React.Component {
         super(...arguments);
         this.state = {
             foodList: [],
+            homeimgs: [],
             isLoading: true
         };
         this._foodItem = (info) => {
@@ -61,7 +62,7 @@ export default class FoodList extends React.Component {
                 Toast.show('暂无菜品，敬请期待');
             }
             else if (result.stat === '1') {
-                Toast.show('数据加载成功');
+                Toast.show('喵，加载好了~');
                 let foodList = result.cuisine.map((item, i) => {
                     return item;
                 });
@@ -78,19 +79,36 @@ export default class FoodList extends React.Component {
             Toast.show(error);
         }
     }
+    async getAllHomeImages() {
+        try {
+            const result = await FoodService.GetHomeSwipers();
+            if (result.swiper.length <= 0) {
+                Toast.show('暂无轮播推荐');
+            }
+            else {
+                this.setState({
+                    homeimgs: result.swiper
+                });
+            }
+        }
+        catch (error) {
+        }
+    }
     componentWillMount() {
-        this.getfoodList('id', 'asc');
+        this.getfoodList('id', 'asc'),
+            this.getAllHomeImages();
     }
     render() {
         return (React.createElement(View, { style: { backgroundColor: 'white' } },
-            React.createElement(Swiper, { autoplay: true, height: 200, showsPagination: true, dotColor: "white", activeDotColor: '#d81e06', horizontal: true, loop: true },
-                React.createElement(Image, { source: require('../../../assets/swiper_1.jpg'), style: { width: '100%', height: 200 } }),
-                React.createElement(Image, { source: require('../../../assets/swiper_2.jpg'), style: { width: '100%', height: 200 } }),
-                React.createElement(Image, { source: require('../../../assets/swiper_3.jpg'), style: { width: '100%', height: 200 } })),
+            React.createElement(Swiper, { autoplay: true, height: 200, showsPagination: true, dotColor: "white", activeDotColor: '#d81e06', horizontal: true, loop: true }, this.state.homeimgs.length === 0 ?
+                React.createElement(Image, { source: require('../../../assets/swiper_3.jpg'), style: { width: '100%', height: 200 } })
+                : this.state.homeimgs.map((item, index) => {
+                    return (React.createElement(Image, { key: index, source: { uri: `${State.getItem('host')}${item.url}` }, style: { width: '100%', height: 200 } }));
+                })),
             React.createElement(View, { style: style.sortmention },
-                React.createElement(TouchableHighlight, null,
+                React.createElement(TouchableHighlight, { onPress: () => this.getfoodList('sell_num', 'desc') },
                     React.createElement(Text, { style: { color: '#d81e06', fontSize: 16 } }, "\u6309\u9500\u91CF\u4ECE\u9AD8\u5230\u4F4E")),
-                React.createElement(TouchableHighlight, null,
+                React.createElement(TouchableHighlight, { onPress: () => this.getfoodList('collect_num', 'desc') },
                     React.createElement(Text, { style: { color: '#d81e06', fontSize: 16 } }, "\u6309\u6536\u85CF\u4ECE\u9AD8\u5230\u4F4E"))),
             React.createElement(ScrollView, { style: { marginBottom: 3, backgroundColor: 'white' } },
                 this.state.foodList.length === 0 ? React.createElement(View, null,

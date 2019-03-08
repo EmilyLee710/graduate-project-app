@@ -47,7 +47,7 @@ export default class Login extends React.Component<NavigationScreenProps, State>
       // alert('请输入验证码！')
       Toast.show('请输入密码')
     } else {
-      Toast.show(passwd)
+      // Toast.show(passwd)
       try {
         let result = await LoginService.userLogin({
           phone: phone,

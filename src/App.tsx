@@ -11,8 +11,8 @@ import State from './services/State'
 
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
-State.setItem('host','http://47.106.186.164:8080/zhaoying')
-// State.setItem('host','http://127.0.0.1:3000')
+// State.setItem('host','http://47.106.186.164:8080/zhaoying')
+State.setItem('host','http://warmcoding.com')
 
 const MyTab = createBottomTabNavigator(
       {

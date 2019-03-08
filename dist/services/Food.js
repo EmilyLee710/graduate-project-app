@@ -18,5 +18,10 @@ class FoodApi {
             data: params
         });
     }
+    GetHomeSwipers() {
+        return Http.post({
+            url: '/api/GetHomeSwipers',
+        });
+    }
 }
 export default new FoodApi();

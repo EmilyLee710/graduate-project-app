@@ -16,6 +16,7 @@ import State from '../../services/State';
 
 interface State {
   foodList: model.FoodlistItem[],
+  homeimgs: model.HomeImages[]
   isLoading: boolean
 }
 
@@ -23,6 +24,7 @@ export default class FoodList extends React.Component<NavigationScreenProps, Sta
 
   state: State = {
     foodList: [],
+    homeimgs: [],
     isLoading: true
   }
 
@@ -122,7 +124,7 @@ export default class FoodList extends React.Component<NavigationScreenProps, Sta
       if (result.stat === '0') {
         Toast.show('暂无菜品，敬请期待')
       } else if (result.stat === '1') {
-        Toast.show('数据加载成功')
+        Toast.show('喵，加载好了~')
         let foodList = result.cuisine.map((item, i) => {
           return item
         })
@@ -138,29 +140,53 @@ export default class FoodList extends React.Component<NavigationScreenProps, Sta
     }
   }
 
+  async getAllHomeImages() {
+    try {
+      const result = await FoodService.GetHomeSwipers()
+      // if (result.stat === 'ok') {
+      // console.log('getimages', result.items)
+      // Toast.show(JSON.stringify(result.swiper))
+      if (result.swiper.length <= 0) {
+        Toast.show('暂无轮播推荐')
+      } else {
+        this.setState({
+          homeimgs: result.swiper
+        })
+      }
+    } catch (error) {
+
+    }
+  }
+
   componentWillMount() {
     // console.log('______________________________')
     // this.getAuctionMarketList();
-    this.getfoodList('id', 'asc')
+    this.getfoodList('id', 'asc'),
+    this.getAllHomeImages()
   }
 
 
 
   render() {
     return (
-      <View style={{backgroundColor:'white'}} >
+      <View style={{ backgroundColor: 'white' }} >
         <Swiper autoplay={true} height={200} showsPagination={true}
           dotColor="white" activeDotColor='#d81e06' horizontal={true} loop={true}
         >
-          <Image source={require('../../../assets/swiper_1.jpg')} style={{ width: '100%', height: 200 }}></Image>
-          <Image source={require('../../../assets/swiper_2.jpg')} style={{ width: '100%', height: 200 }}></Image>
-          <Image source={require('../../../assets/swiper_3.jpg')} style={{ width: '100%', height: 200 }}></Image>
+          {this.state.homeimgs.length === 0 ?            
+              <Image source={require('../../../assets/swiper_3.jpg')} style={{ width: '100%', height: 200 }}></Image>           
+            : this.state.homeimgs.map((item, index) => {
+              return (
+                <Image key={index} source={{ uri: `${State.getItem('host')}${item.url}` }}
+                  style={{ width: '100%', height: 200 }}></Image>
+              )
+            })}
         </Swiper>
         <View style={style.sortmention}>
-          <TouchableHighlight>
+          <TouchableHighlight onPress={()=>this.getfoodList('sell_num','desc')}>
             <Text style={{ color: '#d81e06', fontSize: 16 }}>按销量从高到低</Text>
           </TouchableHighlight>
-          <TouchableHighlight>
+          <TouchableHighlight onPress={()=>this.getfoodList('collect_num','desc')}>
             <Text style={{ color: '#d81e06', fontSize: 16 }}>按收藏从高到低</Text>
           </TouchableHighlight>
         </View>

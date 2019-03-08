@@ -45,11 +45,11 @@ export default class UserCollect extends React.Component<NavigationScreenProps<P
         return (
             <TouchableHighlight onPress={() => this.props.navigation.push('FoodDetail', { id: '1' })}>
                 <View style={{ flexDirection: 'row', backgroundColor: 'white', height: 100, width: '100%' }}>
-                    <ImageBackground style={style.foodlistimg} source={require('../../../assets/food_cover.jpg')} />
+                    <ImageBackground style={style.foodlistimg} source={{uri:`${State.getItem('host')}${info.item.cover_url}`}} />
                     <View style={{ marginTop: 0, marginLeft: 10, width: '65%' }}>
                         <Text style={{ fontSize: 18, marginTop: 0, color: '#d81e06' }}>{info.item.c_name}</Text>
                         {/* <Text style={{fontSize:16}}>川胖子</Text> */}
-                        <Text style={{ fontSize: 18, color: '#d81e06', marginTop: 0 }}>{info.item.price}</Text>
+                        <Text style={{ fontSize: 18, color: '#d81e06', marginTop: 0 }}>现价：￥{info.item.price/100}</Text>
                     </View>
                 </View>
             </TouchableHighlight>
@@ -60,11 +60,11 @@ export default class UserCollect extends React.Component<NavigationScreenProps<P
         return (
             <TouchableHighlight onPress={() => this.props.navigation.push('RestaurantDetail', { id: '1' })}>
                 <View style={{ flexDirection: 'row', backgroundColor: 'white', height: 100, width: '100%' }}>
-                    <ImageBackground style={style.foodlistimg} source={require('../../../assets/food_cover.jpg')} />
+                    <ImageBackground style={style.foodlistimg} source={{uri:`${State.getItem('host')}${info.item.cover_url}`}} />
                     <View style={{ marginTop: 0, marginLeft: 10, width: '65%' }}>
-                        <Text style={{ fontSize: 18, marginTop: 0, color: '#d81e06' }}>{info.item.name}</Text>
+                        <Text style={{ fontSize: 18, marginTop: 0, color: '#d81e06' }}>{info.item.restaurantname}</Text>
                         {/* <Text style={{fontSize:16}}>川胖子</Text> */}
-                        <Text style={{ fontSize: 18, color: '#d81e06', marginTop: 0 }}>{info.item.phone}</Text>
+                        <Text style={{ fontSize: 18, color: '#d81e06', marginTop: 0 }}>地址：{info.item.address}</Text>
                     </View>
                 </View>
             </TouchableHighlight>

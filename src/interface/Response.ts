@@ -73,3 +73,6 @@ export interface UserGetMyOrder{
     order:Model.MyOrder[]
 }
 
+export interface GetHomeSwipers{
+    swiper:Model.HomeImages[]
+}

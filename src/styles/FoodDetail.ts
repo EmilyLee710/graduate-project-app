@@ -50,5 +50,13 @@ export default StyleSheet.create({
         height:30,
         paddingTop:5,
         paddingBottom:5,
-    } 
+    },
+    foodcollect:{
+        width: 60, 
+        height: 30, 
+        backgroundColor: '#d81e06', 
+        borderRadius: 20, 
+        flexDirection: 'row', 
+        justifyContent: 'center' 
+    }
 })

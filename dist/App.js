@@ -7,7 +7,7 @@ import Restaurant from './screen/Restaurant';
 import Shoppingcart from './screen/Shoppingcart';
 import State from './services/State';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
-State.setItem('host', 'http://47.106.186.164:8080/zhaoying');
+State.setItem('host', 'http://warmcoding.com');
 const MyTab = createBottomTabNavigator({
     Food: {
         screen: Food,

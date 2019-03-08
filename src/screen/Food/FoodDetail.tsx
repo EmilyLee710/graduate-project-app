@@ -105,11 +105,11 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
           cuisineID: id,
           UserId: userid
         })
-        if (result.stat !== '1') {
-          // Toast.show(result.stat)
-          throw result.stat
+        if (result.stat === '1') {
+          Toast.show('收藏成功')
         } else {
           Toast.show('收藏失败')
+          throw result.stat
         }
       }
 
@@ -134,9 +134,11 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
       Toast.show('请登录')
       this.props.navigation.push('Login')
     } else {
+      let array = JSON.stringify(State.getItem('userId')).split('')
+      let user = parseInt(array[1])
       if (State.getItem('shopping_cart') === null) {  //无购物车
-        let array = JSON.stringify(State.getItem('userId')).split('')
-        let user = parseInt(array[1])
+        // let array = JSON.stringify(State.getItem('userId')).split('')
+        // let user = parseInt(array[1])
         let cuisine_item = {
           id: this.state.id,
           c_name: this.state.foodInfo.c_name,
@@ -159,12 +161,19 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
         })
         Toast.show('已加入购物车')
       } else {
+        this.state.shoppingcart = State.getItem('shopping_cart')
         let cuisine_item = {
           id: this.state.id,
           c_name: this.state.foodInfo.c_name,
           price: this.state.foodInfo.price,
           cover_url: this.state.foodInfo.cover_url,
           num: '1'
+        }
+        this.state.id = 1
+        this.state.shoppingcart.userId = user
+        this.state.shoppingcart.restauinfo={
+          id:this.state.foodInfo.restau_id,
+          restaurantname:this.state.foodInfo.restau_name
         }
         this.state.shoppingcart.cuisinelist.push(cuisine_item)
         State.setItem('shopping_cart', this.state.shoppingcart)
@@ -183,7 +192,6 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
     // State.setItem('showTab',false)
     this.getFoodinfo()
     if (this.props.navigation.state.params.flag === 'restaurant') {
-
       this.setState({
         shoppingcart: State.getItem('shopping_cart')
       })
@@ -221,11 +229,9 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
               {/* <Text style={{ marginTop: 9 }}>浏览：1314</Text> */}
             </View>
             <TouchableOpacity activeOpacity={0.5} onPress={() => this.collectCuisine()}>
-              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <View
-                  style={{ width: 60, height: 30, backgroundColor: '#d81e06', boderRadius: 20 }}>
-                  <Text style={{ color: 'white', fontSize: 18, textAlign: 'center' }}>收藏</Text>
-                </View>
+              <View
+                style={style.foodcollect}>
+                <Text style={{ color: 'white', fontSize: 18, textAlign: 'center' }}>收藏</Text>
               </View>
             </TouchableOpacity>
             {/* <View style={{ marginTop: 10, width: '88%', marginLeft: '6%' }}>
@@ -233,7 +239,7 @@ export default class BidDetails extends React.Component<NavigationScreenProps<Pa
                 材料主要有豆腐、牛肉末（也可以用猪肉）、辣椒和花椒等。麻来自花椒，
                        辣来自辣椒，这道菜突出了川菜“麻辣”的特点。其口味独特，口感顺滑。</Text>
             </View> */}
-            <View style={{ width: '100%', height: 300 }}>
+            <View style={{ width: '100%', height: 300 ,marginTop:10}}>
               <Image source={{ uri: `${State.getItem('host')}${this.state.foodInfo.detail_url}` }}
                 style={{ width: '100%', height: 300 }} />
             </View>

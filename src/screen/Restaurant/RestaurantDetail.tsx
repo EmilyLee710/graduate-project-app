@@ -166,20 +166,20 @@ export default class RestaurantDetail extends React.Component<NavigationScreenPr
               {/* <Text style={{ marginTop: 9 }}>销量：888</Text> */}
               {/* <Text style={{ marginTop: 9 }}>浏览：1314</Text> */}
             </View>
-            <View>
+            <View style={{marginLeft:10,paddingBottom:5}}>
               <Text>{this.state.restaurant.description}</Text>
-              <Text>{this.state.restaurant.sale_info}</Text>
+              <Text>限时活动：{this.state.restaurant.sale_info}</Text>
             </View>
-            <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+            <View style={{flexDirection:'row',justifyContent:'space-around',marginTop:5}}>
                      <TouchableOpacity activeOpacity={0.5} onPress={()=>this.collectRestaurant()}>
                        <View 
-                       style={{width:60,height:30,backgroundColor:'#d81e06'}}>
+                       style={{width:60,height:30,backgroundColor:'#d81e06',borderRadius:10}}>
                          <Text style={{color:'white',fontSize:18,textAlign:'center'}}>收藏</Text>
                        </View>
                      </TouchableOpacity>
                      <TouchableOpacity activeOpacity={0.5}>
                        <View 
-                       style={{width:60,height:30,backgroundColor:'#343C47'}}>
+                       style={{width:60,height:30,backgroundColor:'#343C47',borderRadius:10}}>
                          <Text style={{color:'white',fontSize:18,textAlign:'center'}}>投诉</Text>
                        </View>
                      </TouchableOpacity>
@@ -187,6 +187,7 @@ export default class RestaurantDetail extends React.Component<NavigationScreenPr
             {this.state.cuisineList.length === 0 ? <View>
               <Text style={{ textAlign: 'center' }}>暂无菜品</Text>
             </View> : <FlatList
+                style={{marginTop:10}}
                 data={this.state.cuisineList}
                 renderItem={this._foodItem}
                 initialNumToRender={2}

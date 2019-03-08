@@ -29,18 +29,22 @@ export default class UserCollect extends React.Component {
         this._foodItem = (info) => {
             return (React.createElement(TouchableHighlight, { onPress: () => this.props.navigation.push('FoodDetail', { id: '1' }) },
                 React.createElement(View, { style: { flexDirection: 'row', backgroundColor: 'white', height: 100, width: '100%' } },
-                    React.createElement(ImageBackground, { style: style.foodlistimg, source: require('../../../assets/food_cover.jpg') }),
+                    React.createElement(ImageBackground, { style: style.foodlistimg, source: { uri: `${State.getItem('host')}${info.item.cover_url}` } }),
                     React.createElement(View, { style: { marginTop: 0, marginLeft: 10, width: '65%' } },
                         React.createElement(Text, { style: { fontSize: 18, marginTop: 0, color: '#d81e06' } }, info.item.c_name),
-                        React.createElement(Text, { style: { fontSize: 18, color: '#d81e06', marginTop: 0 } }, info.item.price)))));
+                        React.createElement(Text, { style: { fontSize: 18, color: '#d81e06', marginTop: 0 } },
+                            "\u73B0\u4EF7\uFF1A\uFFE5",
+                            info.item.price / 100)))));
         };
         this._restauItem = (info) => {
             return (React.createElement(TouchableHighlight, { onPress: () => this.props.navigation.push('RestaurantDetail', { id: '1' }) },
                 React.createElement(View, { style: { flexDirection: 'row', backgroundColor: 'white', height: 100, width: '100%' } },
-                    React.createElement(ImageBackground, { style: style.foodlistimg, source: require('../../../assets/food_cover.jpg') }),
+                    React.createElement(ImageBackground, { style: style.foodlistimg, source: { uri: `${State.getItem('host')}${info.item.cover_url}` } }),
                     React.createElement(View, { style: { marginTop: 0, marginLeft: 10, width: '65%' } },
-                        React.createElement(Text, { style: { fontSize: 18, marginTop: 0, color: '#d81e06' } }, info.item.name),
-                        React.createElement(Text, { style: { fontSize: 18, color: '#d81e06', marginTop: 0 } }, info.item.phone)))));
+                        React.createElement(Text, { style: { fontSize: 18, marginTop: 0, color: '#d81e06' } }, info.item.restaurantname),
+                        React.createElement(Text, { style: { fontSize: 18, color: '#d81e06', marginTop: 0 } },
+                            "\u5730\u5740\uFF1A",
+                            info.item.address)))));
         };
     }
     async getCollectInfo() {
